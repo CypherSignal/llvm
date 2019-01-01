@@ -223,6 +223,13 @@ namespace CallingConv {
     // Calling convention between AArch64 Advanced SIMD functions
     AArch64_VectorCall = 97,
 
+    /// WDC65816_INTR - Calling convention used for WDC65816 interrupt routines.
+    WDC65816_INTR = 1021,
+
+    /// Calling convention used for special WDC65816 rtlib functions
+    /// which have an "optimized" convention using additional registers.
+    WDC65816_BUILTIN = 1022,
+
     /// The highest possible calling convention ID. Must be some 2^k - 1.
     MaxID = 1023
   };
