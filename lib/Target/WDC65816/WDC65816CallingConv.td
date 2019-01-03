@@ -12,26 +12,28 @@
 //===----------------------------------------------------------------------===//
 // WDC65816 Return Value Calling Convention
 //===----------------------------------------------------------------------===//
-// def RetCC_WDC65816 : CallingConv<[
-//   // i8 are returned in registers R12B, R13B, R14B, R15B
-//   CCIfType<[i8], CCAssignToReg<[R12B, R13B, R14B, R15B]>>,
+def RetCC_WDC65816 : CallingConv<[
+  // WDC65816-TODO: do we want to use all low/high regs? Would it be costlier
+  // to get data from YH back into A or C, compared to just reading from stack...?
+  // i8 are returned in accumulator and index registers
+  CCIfType<[i8], CCAssignToReg<[A, B, XL, YL, XH, YH]>>,
 
-//   // i16 are returned in registers R12, R13, R14, R15
-//   CCIfType<[i16], CCAssignToReg<[R12, R13, R14, R15]>>
-// ]>;
+  // i16 are returned in accumulator and index registers
+  CCIfType<[i16], CCAssignToReg<[C, X, Y]>>
+
+  // WDC65816-TODO: can we return on the stack for larger data?
+]>;
 
 //===----------------------------------------------------------------------===//
 // WDC65816 Argument Calling Conventions
 //===----------------------------------------------------------------------===//
-// def CC_WDC65816_AssignStack : CallingConv<[
-//   // Pass by value if the byval attribute is given
-//   CCIfByVal<CCPassByVal<2, 2>>,
+def CC_WDC65816_AssignStack : CallingConv<[
+  // try to assign 8b values into 8b registers, then spill to stack
+  CCIfType<[i8], CCAssignToReg<[A, B, XL, YL, XH, YH]>>,
+  CCIfType<[i8], CCAssignToStack<1, 1>>,
 
-//   // Promote i8 arguments to i16.
-//   CCIfType<[i8], CCPromoteToType<i16>>,
-
-//   // Integer values get stored in stack slots that are 2 bytes in
-//   // size and 2-byte aligned.
-//   CCIfType<[i16], CCAssignToStack<2, 2>>
-// ]>;
+  // try to assign 16b values into 16b registers, then spill to stack
+  CCIfType<[i16], CCAssignToReg<[C, X, Y]>>,
+  CCIfType<[i16], CCAssignToStack<2, 1>>
+]>;
 
