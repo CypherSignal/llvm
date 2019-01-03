@@ -54,8 +54,15 @@ let SubRegIndices = [sub_lo, sub_hi], CoveredBySubRegs = 1 in {
 //  Register classes
 //===----------------------------------------------------------------------===//
 
-def GR8 : RegisterClass<"WDC65816", [i8], 8, 
-  (add A, B, XL, XH, YL, YH, DBR, K, P, SL, SH)>;
+def GACC8   : RegisterClass<"WDC65816", [i8],   8,  (add A, B)>;
+def GACC16  : RegisterClass<"WDC65816", [i16],  16, (add C)>;
+def GIDX8   : RegisterClass<"WDC65816", [i8],   8,  (add XL, YL, XH, YH)>;
+def GIDX16  : RegisterClass<"WDC65816", [i16],  16, (add X, Y)>;
+def GS8     : RegisterClass<"WDC65816", [i8],   8,  (add SL, SH)>;
+def GS16    : RegisterClass<"WDC65816", [i16],  16, (add S)>;
 
-def GR16 : RegisterClass<"WDC65816", [i16], 16, 
-  (add C, X, Y, D, S, PC)>;
+def GDBR    : RegisterClass<"WDC65816", [i16],  16, (add DBR)>;
+def GD      : RegisterClass<"WDC65816", [i16],  16, (add D)>;
+def GK      : RegisterClass<"WDC65816", [i16],  16, (add K)>;
+def GPC     : RegisterClass<"WDC65816", [i16],  16, (add PC)>;
+def GP      : RegisterClass<"WDC65816", [i16],  16, (add P)>;
