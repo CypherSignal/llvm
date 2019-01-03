@@ -67,8 +67,8 @@ void WDC65816InstPrinter::printOperand(const MCInst *MI, unsigned OpNo,
 void WDC65816InstPrinter::printSrcMemOperand(const MCInst *MI, unsigned OpNo,
                                            raw_ostream &O,
                                            const char *Modifier) {
-  const MCOperand &Base = MI->getOperand(OpNo);
-  const MCOperand &Disp = MI->getOperand(OpNo+1);
+  //const MCOperand &Base = MI->getOperand(OpNo);
+  //const MCOperand &Disp = MI->getOperand(OpNo+1);
 
   // Print displacement first
 
@@ -78,20 +78,22 @@ void WDC65816InstPrinter::printSrcMemOperand(const MCInst *MI, unsigned OpNo,
   // vs
   //   mov.w glb(r1), r2
   // Otherwise (!) WDC65816-as will silently miscompile the output :(
-  if (Base.getReg() == WDC65816::SR)
-    O << '&';
 
-  if (Disp.isExpr())
-    Disp.getExpr()->print(O, &MAI);
-  else {
-    assert(Disp.isImm() && "Expected immediate in displacement field");
-    O << Disp.getImm();
-  }
+  // WDC65816-TODO
+  //if (Base.getReg() == WDC65816::SR)
+  //  O << '&';
 
-  // Print register base field
-  if ((Base.getReg() != WDC65816::SR) &&
-      (Base.getReg() != WDC65816::PC))
-    O << '(' << getRegisterName(Base.getReg()) << ')';
+  //if (Disp.isExpr())
+  //  Disp.getExpr()->print(O, &MAI);
+  //else {
+  //  assert(Disp.isImm() && "Expected immediate in displacement field");
+  //  O << Disp.getImm();
+  //}
+
+  //// Print register base field
+  //if ((Base.getReg() != WDC65816::SR) &&
+  //    (Base.getReg() != WDC65816::PC))
+  //  O << '(' << getRegisterName(Base.getReg()) << ')';
 }
 
 void WDC65816InstPrinter::printIndRegOperand(const MCInst *MI, unsigned OpNo,

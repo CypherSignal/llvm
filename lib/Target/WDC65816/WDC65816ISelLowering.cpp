@@ -843,8 +843,9 @@ SDValue WDC65816TargetLowering::LowerCCCCallTo(
     } else {
       assert(VA.isMemLoc());
 
+      // WDC65816-TODO this might be incorrect, and should be "FramePtr"
       if (!StackPtr.getNode())
-        StackPtr = DAG.getCopyFromReg(Chain, dl, WDC65816::SP, PtrVT);
+        StackPtr = DAG.getCopyFromReg(Chain, dl, WDC65816::S, PtrVT);
 
       SDValue PtrOff =
           DAG.getNode(ISD::ADD, dl, PtrVT, StackPtr,

@@ -162,8 +162,5 @@ WDC65816RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 }
 
 unsigned WDC65816RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
-  // WDC65816-TODO 
-  //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
-  //return TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP;
-  return WDC65816::SP;
+  return WDC65816::S;
 }
