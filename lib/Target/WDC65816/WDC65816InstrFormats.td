@@ -43,7 +43,7 @@ class WDC65816Inst<dag outs, dag ins, int size, string asmstr> : Instruction {
   let Size = size;
 }
 
-def DummyInstr : WDC65816Inst<(outs), (ins GR8:$rd), 1, "clc">;
+def DummyInstr : WDC65816Inst<(outs), (ins), 1, "clc">;
 
 // // WDC65816 Double Operand (Format I) Instructions
 // class IForm<bits<4> opcode, DestMode ad, bit bw, SourceMode as, int size,

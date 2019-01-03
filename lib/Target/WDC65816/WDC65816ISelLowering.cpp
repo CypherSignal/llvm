@@ -720,7 +720,7 @@ WDC65816TargetLowering::LowerReturn(SDValue Chain, CallingConv::ID CallConv,
                                   const SmallVectorImpl<SDValue> &OutVals,
                                   const SDLoc &dl, SelectionDAG &DAG) const {
 
-  MachineFunction &MF = DAG.getMachineFunction();
+  //MachineFunction &MF = DAG.getMachineFunction();
 
   // CCValAssign - represent the assignment of the return value to a location
   SmallVector<CCValAssign, 16> RVLocs;
@@ -753,21 +753,21 @@ WDC65816TargetLowering::LowerReturn(SDValue Chain, CallingConv::ID CallConv,
     RetOps.push_back(DAG.getRegister(VA.getLocReg(), VA.getLocVT()));
   }
 
-  if (MF.getFunction().hasStructRetAttr()) {
-    WDC65816MachineFunctionInfo *FuncInfo = MF.getInfo<WDC65816MachineFunctionInfo>();
-    unsigned Reg = FuncInfo->getSRetReturnReg();
+  //if (MF.getFunction().hasStructRetAttr()) {
+  //  WDC65816MachineFunctionInfo *FuncInfo = MF.getInfo<WDC65816MachineFunctionInfo>();
+  //  unsigned Reg = FuncInfo->getSRetReturnReg();
 
-    if (!Reg)
-      llvm_unreachable("sret virtual register not created in entry block");
+  //  if (!Reg)
+  //    llvm_unreachable("sret virtual register not created in entry block");
 
-    SDValue Val =
-      DAG.getCopyFromReg(Chain, dl, Reg, getPointerTy(DAG.getDataLayout()));
-    unsigned R12 = WDC65816::R12;
+  //  SDValue Val =
+  //    DAG.getCopyFromReg(Chain, dl, Reg, getPointerTy(DAG.getDataLayout()));
+  //  unsigned R12 = WDC65816::R12;
 
-    Chain = DAG.getCopyToReg(Chain, dl, R12, Val, Flag);
-    Flag = Chain.getValue(1);
-    RetOps.push_back(DAG.getRegister(R12, getPointerTy(DAG.getDataLayout())));
-  }
+  //  Chain = DAG.getCopyToReg(Chain, dl, R12, Val, Flag);
+  //  Flag = Chain.getValue(1);
+  //  RetOps.push_back(DAG.getRegister(R12, getPointerTy(DAG.getDataLayout())));
+  //}
 
   unsigned Opc = (CallConv == CallingConv::WDC65816_INTR ?
                   WDC65816ISD::RETI_FLAG : WDC65816ISD::RET_FLAG);
@@ -1170,22 +1170,22 @@ SDValue WDC65816TargetLowering::LowerSETCC(SDValue Op, SelectionDAG &DAG) const 
   }
   EVT VT = Op.getValueType();
   SDValue One  = DAG.getConstant(1, dl, VT);
-  if (Convert) {
-    SDValue SR = DAG.getCopyFromReg(DAG.getEntryNode(), dl, WDC65816::SR,
-                                    MVT::i16, Flag);
-    if (Shift)
-      // FIXME: somewhere this is turned into a SRL, lower it MSP specific?
-      SR = DAG.getNode(ISD::SRA, dl, MVT::i16, SR, One);
-    SR = DAG.getNode(ISD::AND, dl, MVT::i16, SR, One);
-    if (Invert)
-      SR = DAG.getNode(ISD::XOR, dl, MVT::i16, SR, One);
-    return SR;
-  } else {
+  //if (Convert) {
+  //  SDValue SR = DAG.getCopyFromReg(DAG.getEntryNode(), dl, WDC65816::SR,
+  //                                  MVT::i16, Flag);
+  //  if (Shift)
+  //    // FIXME: somewhere this is turned into a SRL, lower it MSP specific?
+  //    SR = DAG.getNode(ISD::SRA, dl, MVT::i16, SR, One);
+  //  SR = DAG.getNode(ISD::AND, dl, MVT::i16, SR, One);
+  //  if (Invert)
+  //    SR = DAG.getNode(ISD::XOR, dl, MVT::i16, SR, One);
+  //  return SR;
+  //} else {
     SDValue Zero = DAG.getConstant(0, dl, VT);
     SDVTList VTs = DAG.getVTList(Op.getValueType(), MVT::Glue);
     SDValue Ops[] = {One, Zero, TargetCC, Flag};
     return DAG.getNode(WDC65816ISD::SELECT_CC, dl, VTs, Ops);
-  }
+  //}
 }
 
 SDValue WDC65816TargetLowering::LowerSELECT_CC(SDValue Op,
@@ -1269,15 +1269,16 @@ SDValue WDC65816TargetLowering::LowerFRAMEADDR(SDValue Op,
   MachineFrameInfo &MFI = DAG.getMachineFunction().getFrameInfo();
   MFI.setFrameAddressIsTaken(true);
 
-  EVT VT = Op.getValueType();
-  SDLoc dl(Op);  // FIXME probably not meaningful
-  unsigned Depth = cast<ConstantSDNode>(Op.getOperand(0))->getZExtValue();
-  SDValue FrameAddr = DAG.getCopyFromReg(DAG.getEntryNode(), dl,
-                                         WDC65816::FP, VT);
-  while (Depth--)
-    FrameAddr = DAG.getLoad(VT, dl, DAG.getEntryNode(), FrameAddr,
-                            MachinePointerInfo());
-  return FrameAddr;
+  //EVT VT = Op.getValueType();
+  //SDLoc dl(Op);  // FIXME probably not meaningful
+  //unsigned Depth = cast<ConstantSDNode>(Op.getOperand(0))->getZExtValue();
+  //SDValue FrameAddr = DAG.getCopyFromReg(DAG.getEntryNode(), dl,
+  //                                       WDC65816::FP, VT);
+  //while (Depth--)
+  //  FrameAddr = DAG.getLoad(VT, dl, DAG.getEntryNode(), FrameAddr,
+  //                          MachinePointerInfo());
+  //return FrameAddr;
+  return SDValue();
 }
 
 SDValue WDC65816TargetLowering::LowerVASTART(SDValue Op,

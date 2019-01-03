@@ -252,32 +252,32 @@ bool WDC65816DAGToDAGISel::SelectAddr(SDValue N,
   if (MatchAddress(N, AM))
     return false;
 
-  if (AM.BaseType == WDC65816ISelAddressMode::RegBase)
-    if (!AM.Base.Reg.getNode())
-      AM.Base.Reg = CurDAG->getRegister(WDC65816::SR, MVT::i16);
+  //if (AM.BaseType == WDC65816ISelAddressMode::RegBase)
+  //  if (!AM.Base.Reg.getNode())
+  //    AM.Base.Reg = CurDAG->getRegister(WDC65816::SR, MVT::i16);
 
-  Base = (AM.BaseType == WDC65816ISelAddressMode::FrameIndexBase)
-             ? CurDAG->getTargetFrameIndex(
-                   AM.Base.FrameIndex,
-                   getTargetLowering()->getPointerTy(CurDAG->getDataLayout()))
-             : AM.Base.Reg;
+  //Base = (AM.BaseType == WDC65816ISelAddressMode::FrameIndexBase)
+  //           ? CurDAG->getTargetFrameIndex(
+  //                 AM.Base.FrameIndex,
+  //                 getTargetLowering()->getPointerTy(CurDAG->getDataLayout()))
+  //           : AM.Base.Reg;
 
-  if (AM.GV)
-    Disp = CurDAG->getTargetGlobalAddress(AM.GV, SDLoc(N),
-                                          MVT::i16, AM.Disp,
-                                          0/*AM.SymbolFlags*/);
-  else if (AM.CP)
-    Disp = CurDAG->getTargetConstantPool(AM.CP, MVT::i16,
-                                         AM.Align, AM.Disp, 0/*AM.SymbolFlags*/);
-  else if (AM.ES)
-    Disp = CurDAG->getTargetExternalSymbol(AM.ES, MVT::i16, 0/*AM.SymbolFlags*/);
-  else if (AM.JT != -1)
-    Disp = CurDAG->getTargetJumpTable(AM.JT, MVT::i16, 0/*AM.SymbolFlags*/);
-  else if (AM.BlockAddr)
-    Disp = CurDAG->getTargetBlockAddress(AM.BlockAddr, MVT::i32, 0,
-                                         0/*AM.SymbolFlags*/);
-  else
-    Disp = CurDAG->getTargetConstant(AM.Disp, SDLoc(N), MVT::i16);
+  //if (AM.GV)
+  //  Disp = CurDAG->getTargetGlobalAddress(AM.GV, SDLoc(N),
+  //                                        MVT::i16, AM.Disp,
+  //                                        0/*AM.SymbolFlags*/);
+  //else if (AM.CP)
+  //  Disp = CurDAG->getTargetConstantPool(AM.CP, MVT::i16,
+  //                                       AM.Align, AM.Disp, 0/*AM.SymbolFlags*/);
+  //else if (AM.ES)
+  //  Disp = CurDAG->getTargetExternalSymbol(AM.ES, MVT::i16, 0/*AM.SymbolFlags*/);
+  //else if (AM.JT != -1)
+  //  Disp = CurDAG->getTargetJumpTable(AM.JT, MVT::i16, 0/*AM.SymbolFlags*/);
+  //else if (AM.BlockAddr)
+  //  Disp = CurDAG->getTargetBlockAddress(AM.BlockAddr, MVT::i32, 0,
+  //                                       0/*AM.SymbolFlags*/);
+  //else
+  //  Disp = CurDAG->getTargetConstant(AM.Disp, SDLoc(N), MVT::i16);
 
   return true;
 }

@@ -37,59 +37,60 @@ WDC65816RegisterInfo::WDC65816RegisterInfo()
 
 const MCPhysReg*
 WDC65816RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
-  const WDC65816FrameLowering *TFI = getFrameLowering(*MF);
-  const Function* F = &MF->getFunction();
-  static const MCPhysReg CalleeSavedRegs[] = {
-    WDC65816::FP, WDC65816::R5, WDC65816::R6, WDC65816::R7,
-    WDC65816::R8, WDC65816::R9, WDC65816::R10,
-    0
-  };
-  static const MCPhysReg CalleeSavedRegsFP[] = {
-    WDC65816::R5, WDC65816::R6, WDC65816::R7,
-    WDC65816::R8, WDC65816::R9, WDC65816::R10,
-    0
-  };
-  static const MCPhysReg CalleeSavedRegsIntr[] = {
-    WDC65816::FP,  WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
-    WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
-    WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
-    0
-  };
-  static const MCPhysReg CalleeSavedRegsIntrFP[] = {
-    WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
-    WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
-    WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
-    0
-  };
+  //const WDC65816FrameLowering *TFI = getFrameLowering(*MF);
+  //const Function* F = &MF->getFunction();
+  //static const MCPhysReg CalleeSavedRegs[] = {
+  //  WDC65816::FP, WDC65816::R5, WDC65816::R6, WDC65816::R7,
+  //  WDC65816::R8, WDC65816::R9, WDC65816::R10,
+  //  0
+  //};
+  //static const MCPhysReg CalleeSavedRegsFP[] = {
+  //  WDC65816::R5, WDC65816::R6, WDC65816::R7,
+  //  WDC65816::R8, WDC65816::R9, WDC65816::R10,
+  //  0
+  //};
+  //static const MCPhysReg CalleeSavedRegsIntr[] = {
+  //  WDC65816::FP,  WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
+  //  WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
+  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
+  //  0
+  //};
+  //static const MCPhysReg CalleeSavedRegsIntrFP[] = {
+  //  WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
+  //  WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
+  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
+  //  0
+  //};
 
-  if (TFI->hasFP(*MF))
-    return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
-            CalleeSavedRegsIntrFP : CalleeSavedRegsFP);
-  else
-    return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
-            CalleeSavedRegsIntr : CalleeSavedRegs);
+  //if (TFI->hasFP(*MF))
+  //  return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
+  //          CalleeSavedRegsIntrFP : CalleeSavedRegsFP);
+  //else
+  //  return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
+  //          CalleeSavedRegsIntr : CalleeSavedRegs);
+  return nullptr;
 
 }
 
 BitVector WDC65816RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
-  const WDC65816FrameLowering *TFI = getFrameLowering(MF);
+  //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
 
-  // Mark 4 special registers with subregisters as reserved.
-  Reserved.set(WDC65816::PCB);
-  Reserved.set(WDC65816::SPB);
-  Reserved.set(WDC65816::SRB);
-  Reserved.set(WDC65816::CGB);
-  Reserved.set(WDC65816::PC);
-  Reserved.set(WDC65816::SP);
-  Reserved.set(WDC65816::SR);
-  Reserved.set(WDC65816::CG);
+  //// Mark 4 special registers with subregisters as reserved.
+  //Reserved.set(WDC65816::PCB);
+  //Reserved.set(WDC65816::SPB);
+  //Reserved.set(WDC65816::SRB);
+  //Reserved.set(WDC65816::CGB);
+  //Reserved.set(WDC65816::PC);
+  //Reserved.set(WDC65816::SP);
+  //Reserved.set(WDC65816::SR);
+  //Reserved.set(WDC65816::CG);
 
-  // Mark frame pointer as reserved if needed.
-  if (TFI->hasFP(MF)) {
-    Reserved.set(WDC65816::FPB);
-    Reserved.set(WDC65816::FP);
-  }
+  //// Mark frame pointer as reserved if needed.
+  //if (TFI->hasFP(MF)) {
+  //  Reserved.set(WDC65816::FPB);
+  //  Reserved.set(WDC65816::FP);
+  //}
 
   return Reserved;
 }
@@ -97,7 +98,8 @@ BitVector WDC65816RegisterInfo::getReservedRegs(const MachineFunction &MF) const
 const TargetRegisterClass *
 WDC65816RegisterInfo::getPointerRegClass(const MachineFunction &MF, unsigned Kind)
                                                                          const {
-  return &WDC65816::GR16RegClass;
+  //return &WDC65816::GR16RegClass;
+  return nullptr;
 }
 
 void
@@ -156,6 +158,7 @@ WDC65816RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 }
 
 unsigned WDC65816RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
-  const WDC65816FrameLowering *TFI = getFrameLowering(MF);
-  return TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP;
+  //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
+  //return TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP;
+  return WDC65816::SP;
 }
