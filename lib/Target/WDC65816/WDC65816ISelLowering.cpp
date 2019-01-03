@@ -1180,6 +1180,7 @@ SDValue WDC65816TargetLowering::LowerSETCC(SDValue Op, SelectionDAG &DAG) const 
   }
   EVT VT = Op.getValueType();
   SDValue One  = DAG.getConstant(1, dl, VT);
+  // WDC65816-TODO 
   //if (Convert) {
   //  SDValue SR = DAG.getCopyFromReg(DAG.getEntryNode(), dl, WDC65816::SR,
   //                                  MVT::i16, Flag);
@@ -1279,6 +1280,7 @@ SDValue WDC65816TargetLowering::LowerFRAMEADDR(SDValue Op,
   MachineFrameInfo &MFI = DAG.getMachineFunction().getFrameInfo();
   MFI.setFrameAddressIsTaken(true);
 
+  // WDC65816-TODO 
   //EVT VT = Op.getValueType();
   //SDLoc dl(Op);  // FIXME probably not meaningful
   //unsigned Depth = cast<ConstantSDNode>(Op.getOperand(0))->getZExtValue();
