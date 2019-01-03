@@ -104,55 +104,55 @@ void
 WDC65816RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
                                         int SPAdj, unsigned FIOperandNum,
                                         RegScavenger *RS) const {
-  assert(SPAdj == 0 && "Unexpected");
+  //assert(SPAdj == 0 && "Unexpected");
 
-  MachineInstr &MI = *II;
-  MachineBasicBlock &MBB = *MI.getParent();
-  MachineFunction &MF = *MBB.getParent();
-  const WDC65816FrameLowering *TFI = getFrameLowering(MF);
-  DebugLoc dl = MI.getDebugLoc();
-  int FrameIndex = MI.getOperand(FIOperandNum).getIndex();
+  //MachineInstr &MI = *II;
+  //MachineBasicBlock &MBB = *MI.getParent();
+  //MachineFunction &MF = *MBB.getParent();
+  //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
+  //DebugLoc dl = MI.getDebugLoc();
+  //int FrameIndex = MI.getOperand(FIOperandNum).getIndex();
 
-  unsigned BasePtr = (TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP);
-  int Offset = MF.getFrameInfo().getObjectOffset(FrameIndex);
+  //unsigned BasePtr = (TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP);
+  //int Offset = MF.getFrameInfo().getObjectOffset(FrameIndex);
 
-  // Skip the saved PC
-  Offset += 2;
+  //// Skip the saved PC
+  //Offset += 2;
 
-  if (!TFI->hasFP(MF))
-    Offset += MF.getFrameInfo().getStackSize();
-  else
-    Offset += 2; // Skip the saved FP
+  //if (!TFI->hasFP(MF))
+  //  Offset += MF.getFrameInfo().getStackSize();
+  //else
+  //  Offset += 2; // Skip the saved FP
 
-  // Fold imm into offset
-  Offset += MI.getOperand(FIOperandNum + 1).getImm();
+  //// Fold imm into offset
+  //Offset += MI.getOperand(FIOperandNum + 1).getImm();
 
-  if (MI.getOpcode() == WDC65816::ADDframe) {
-    // This is actually "load effective address" of the stack slot
-    // instruction. We have only two-address instructions, thus we need to
-    // expand it into mov + add
-    const TargetInstrInfo &TII = *MF.getSubtarget().getInstrInfo();
+  //if (MI.getOpcode() == WDC65816::ADDframe) {
+  //  // This is actually "load effective address" of the stack slot
+  //  // instruction. We have only two-address instructions, thus we need to
+  //  // expand it into mov + add
+  //  const TargetInstrInfo &TII = *MF.getSubtarget().getInstrInfo();
 
-    MI.setDesc(TII.get(WDC65816::MOV16rr));
-    MI.getOperand(FIOperandNum).ChangeToRegister(BasePtr, false);
+  //  MI.setDesc(TII.get(WDC65816::MOV16rr));
+  //  MI.getOperand(FIOperandNum).ChangeToRegister(BasePtr, false);
 
-    if (Offset == 0)
-      return;
+  //  if (Offset == 0)
+  //    return;
 
-    // We need to materialize the offset via add instruction.
-    unsigned DstReg = MI.getOperand(0).getReg();
-    if (Offset < 0)
-      BuildMI(MBB, std::next(II), dl, TII.get(WDC65816::SUB16ri), DstReg)
-        .addReg(DstReg).addImm(-Offset);
-    else
-      BuildMI(MBB, std::next(II), dl, TII.get(WDC65816::ADD16ri), DstReg)
-        .addReg(DstReg).addImm(Offset);
+  //  // We need to materialize the offset via add instruction.
+  //  unsigned DstReg = MI.getOperand(0).getReg();
+  //  if (Offset < 0)
+  //    BuildMI(MBB, std::next(II), dl, TII.get(WDC65816::SUB16ri), DstReg)
+  //      .addReg(DstReg).addImm(-Offset);
+  //  else
+  //    BuildMI(MBB, std::next(II), dl, TII.get(WDC65816::ADD16ri), DstReg)
+  //      .addReg(DstReg).addImm(Offset);
 
-    return;
-  }
+  //  return;
+  //}
 
-  MI.getOperand(FIOperandNum).ChangeToRegister(BasePtr, false);
-  MI.getOperand(FIOperandNum + 1).ChangeToImmediate(Offset);
+  //MI.getOperand(FIOperandNum).ChangeToRegister(BasePtr, false);
+  //MI.getOperand(FIOperandNum + 1).ChangeToImmediate(Offset);
 }
 
 unsigned WDC65816RegisterInfo::getFrameRegister(const MachineFunction &MF) const {

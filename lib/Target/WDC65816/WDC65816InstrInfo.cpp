@@ -31,7 +31,7 @@ using namespace llvm;
 void WDC65816InstrInfo::anchor() {}
 
 WDC65816InstrInfo::WDC65816InstrInfo(WDC65816Subtarget &STI)
-  : WDC65816GenInstrInfo(WDC65816::ADJCALLSTACKDOWN, WDC65816::ADJCALLSTACKUP),
+  : //WDC65816GenInstrInfo(WDC65816::ADJCALLSTACKDOWN, WDC65816::ADJCALLSTACKUP),
     RI() {}
 
 void WDC65816InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
@@ -39,26 +39,26 @@ void WDC65816InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
                                     unsigned SrcReg, bool isKill, int FrameIdx,
                                           const TargetRegisterClass *RC,
                                           const TargetRegisterInfo *TRI) const {
-  DebugLoc DL;
-  if (MI != MBB.end()) DL = MI->getDebugLoc();
-  MachineFunction &MF = *MBB.getParent();
-  MachineFrameInfo &MFI = MF.getFrameInfo();
+  // DebugLoc DL;
+  // if (MI != MBB.end()) DL = MI->getDebugLoc();
+  // MachineFunction &MF = *MBB.getParent();
+  // MachineFrameInfo &MFI = MF.getFrameInfo();
 
-  MachineMemOperand *MMO = MF.getMachineMemOperand(
-      MachinePointerInfo::getFixedStack(MF, FrameIdx),
-      MachineMemOperand::MOStore, MFI.getObjectSize(FrameIdx),
-      MFI.getObjectAlignment(FrameIdx));
+  // MachineMemOperand *MMO = MF.getMachineMemOperand(
+  //     MachinePointerInfo::getFixedStack(MF, FrameIdx),
+  //     MachineMemOperand::MOStore, MFI.getObjectSize(FrameIdx),
+  //     MFI.getObjectAlignment(FrameIdx));
 
-  if (RC == &WDC65816::GR16RegClass)
-    BuildMI(MBB, MI, DL, get(WDC65816::MOV16mr))
-      .addFrameIndex(FrameIdx).addImm(0)
-      .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
-  else if (RC == &WDC65816::GR8RegClass)
-    BuildMI(MBB, MI, DL, get(WDC65816::MOV8mr))
-      .addFrameIndex(FrameIdx).addImm(0)
-      .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
-  else
-    llvm_unreachable("Cannot store this register to stack slot!");
+  // if (RC == &WDC65816::GR16RegClass)
+  //   BuildMI(MBB, MI, DL, get(WDC65816::MOV16mr))
+  //     .addFrameIndex(FrameIdx).addImm(0)
+  //     .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
+  // else if (RC == &WDC65816::GR8RegClass)
+  //   BuildMI(MBB, MI, DL, get(WDC65816::MOV8mr))
+  //     .addFrameIndex(FrameIdx).addImm(0)
+  //     .addReg(SrcReg, getKillRegState(isKill)).addMemOperand(MMO);
+  // else
+  //   llvm_unreachable("Cannot store this register to stack slot!");
 }
 
 void WDC65816InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
@@ -66,42 +66,42 @@ void WDC65816InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
                                            unsigned DestReg, int FrameIdx,
                                            const TargetRegisterClass *RC,
                                            const TargetRegisterInfo *TRI) const{
-  DebugLoc DL;
-  if (MI != MBB.end()) DL = MI->getDebugLoc();
-  MachineFunction &MF = *MBB.getParent();
-  MachineFrameInfo &MFI = MF.getFrameInfo();
+  // DebugLoc DL;
+  // if (MI != MBB.end()) DL = MI->getDebugLoc();
+  // MachineFunction &MF = *MBB.getParent();
+  // MachineFrameInfo &MFI = MF.getFrameInfo();
 
-  MachineMemOperand *MMO = MF.getMachineMemOperand(
-      MachinePointerInfo::getFixedStack(MF, FrameIdx),
-      MachineMemOperand::MOLoad, MFI.getObjectSize(FrameIdx),
-      MFI.getObjectAlignment(FrameIdx));
+  // MachineMemOperand *MMO = MF.getMachineMemOperand(
+  //     MachinePointerInfo::getFixedStack(MF, FrameIdx),
+  //     MachineMemOperand::MOLoad, MFI.getObjectSize(FrameIdx),
+  //     MFI.getObjectAlignment(FrameIdx));
 
-  if (RC == &WDC65816::GR16RegClass)
-    BuildMI(MBB, MI, DL, get(WDC65816::MOV16rm))
-      .addReg(DestReg, getDefRegState(true)).addFrameIndex(FrameIdx)
-      .addImm(0).addMemOperand(MMO);
-  else if (RC == &WDC65816::GR8RegClass)
-    BuildMI(MBB, MI, DL, get(WDC65816::MOV8rm))
-      .addReg(DestReg, getDefRegState(true)).addFrameIndex(FrameIdx)
-      .addImm(0).addMemOperand(MMO);
-  else
-    llvm_unreachable("Cannot store this register to stack slot!");
+  // if (RC == &WDC65816::GR16RegClass)
+  //   BuildMI(MBB, MI, DL, get(WDC65816::MOV16rm))
+  //     .addReg(DestReg, getDefRegState(true)).addFrameIndex(FrameIdx)
+  //     .addImm(0).addMemOperand(MMO);
+  // else if (RC == &WDC65816::GR8RegClass)
+  //   BuildMI(MBB, MI, DL, get(WDC65816::MOV8rm))
+  //     .addReg(DestReg, getDefRegState(true)).addFrameIndex(FrameIdx)
+  //     .addImm(0).addMemOperand(MMO);
+  // else
+  //   llvm_unreachable("Cannot store this register to stack slot!");
 }
 
 void WDC65816InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
                                   MachineBasicBlock::iterator I,
                                   const DebugLoc &DL, unsigned DestReg,
                                   unsigned SrcReg, bool KillSrc) const {
-  unsigned Opc;
-  if (WDC65816::GR16RegClass.contains(DestReg, SrcReg))
-    Opc = WDC65816::MOV16rr;
-  else if (WDC65816::GR8RegClass.contains(DestReg, SrcReg))
-    Opc = WDC65816::MOV8rr;
-  else
-    llvm_unreachable("Impossible reg-to-reg copy");
+  // unsigned Opc;
+  // if (WDC65816::GR16RegClass.contains(DestReg, SrcReg))
+  //   Opc = WDC65816::MOV16rr;
+  // else if (WDC65816::GR8RegClass.contains(DestReg, SrcReg))
+  //   Opc = WDC65816::MOV8rr;
+  // else
+  //   llvm_unreachable("Impossible reg-to-reg copy");
 
-  BuildMI(MBB, I, DL, get(Opc), DestReg)
-    .addReg(SrcReg, getKillRegState(KillSrc));
+  // BuildMI(MBB, I, DL, get(Opc), DestReg)
+  //   .addReg(SrcReg, getKillRegState(KillSrc));
 }
 
 unsigned WDC65816InstrInfo::removeBranch(MachineBasicBlock &MBB,
@@ -111,20 +111,20 @@ unsigned WDC65816InstrInfo::removeBranch(MachineBasicBlock &MBB,
   MachineBasicBlock::iterator I = MBB.end();
   unsigned Count = 0;
 
-  while (I != MBB.begin()) {
-    --I;
-    if (I->isDebugInstr())
-      continue;
-    if (I->getOpcode() != WDC65816::JMP &&
-        I->getOpcode() != WDC65816::JCC &&
-        I->getOpcode() != WDC65816::Br &&
-        I->getOpcode() != WDC65816::Bm)
-      break;
-    // Remove the branch.
-    I->eraseFromParent();
-    I = MBB.end();
-    ++Count;
-  }
+  //while (I != MBB.begin()) {
+  //  --I;
+  //  if (I->isDebugInstr())
+  //    continue;
+  //  if (I->getOpcode() != WDC65816::JMP &&
+  //      I->getOpcode() != WDC65816::JCC &&
+  //      I->getOpcode() != WDC65816::Br &&
+  //      I->getOpcode() != WDC65816::Bm)
+  //    break;
+  //  // Remove the branch.
+  //  I->eraseFromParent();
+  //  I = MBB.end();
+  //  ++Count;
+  //}
 
   return Count;
 }
@@ -178,87 +178,87 @@ bool WDC65816InstrInfo::analyzeBranch(MachineBasicBlock &MBB,
                                     MachineBasicBlock *&FBB,
                                     SmallVectorImpl<MachineOperand> &Cond,
                                     bool AllowModify) const {
-  // Start from the bottom of the block and work up, examining the
-  // terminator instructions.
-  MachineBasicBlock::iterator I = MBB.end();
-  while (I != MBB.begin()) {
-    --I;
-    if (I->isDebugInstr())
-      continue;
+  //// Start from the bottom of the block and work up, examining the
+  //// terminator instructions.
+  //MachineBasicBlock::iterator I = MBB.end();
+  //while (I != MBB.begin()) {
+  //  --I;
+  //  if (I->isDebugInstr())
+  //    continue;
 
-    // Working from the bottom, when we see a non-terminator
-    // instruction, we're done.
-    if (!isUnpredicatedTerminator(*I))
-      break;
+  //  // Working from the bottom, when we see a non-terminator
+  //  // instruction, we're done.
+  //  if (!isUnpredicatedTerminator(*I))
+  //    break;
 
-    // A terminator that isn't a branch can't easily be handled
-    // by this analysis.
-    if (!I->isBranch())
-      return true;
+  //  // A terminator that isn't a branch can't easily be handled
+  //  // by this analysis.
+  //  if (!I->isBranch())
+  //    return true;
 
-    // Cannot handle indirect branches.
-    if (I->getOpcode() == WDC65816::Br ||
-        I->getOpcode() == WDC65816::Bm)
-      return true;
+  //  // Cannot handle indirect branches.
+  //  if (I->getOpcode() == WDC65816::Br ||
+  //      I->getOpcode() == WDC65816::Bm)
+  //    return true;
 
-    // Handle unconditional branches.
-    if (I->getOpcode() == WDC65816::JMP) {
-      if (!AllowModify) {
-        TBB = I->getOperand(0).getMBB();
-        continue;
-      }
+  //  // Handle unconditional branches.
+  //  if (I->getOpcode() == WDC65816::JMP) {
+  //    if (!AllowModify) {
+  //      TBB = I->getOperand(0).getMBB();
+  //      continue;
+  //    }
 
-      // If the block has any instructions after a JMP, delete them.
-      while (std::next(I) != MBB.end())
-        std::next(I)->eraseFromParent();
-      Cond.clear();
-      FBB = nullptr;
+  //    // If the block has any instructions after a JMP, delete them.
+  //    while (std::next(I) != MBB.end())
+  //      std::next(I)->eraseFromParent();
+  //    Cond.clear();
+  //    FBB = nullptr;
 
-      // Delete the JMP if it's equivalent to a fall-through.
-      if (MBB.isLayoutSuccessor(I->getOperand(0).getMBB())) {
-        TBB = nullptr;
-        I->eraseFromParent();
-        I = MBB.end();
-        continue;
-      }
+  //    // Delete the JMP if it's equivalent to a fall-through.
+  //    if (MBB.isLayoutSuccessor(I->getOperand(0).getMBB())) {
+  //      TBB = nullptr;
+  //      I->eraseFromParent();
+  //      I = MBB.end();
+  //      continue;
+  //    }
 
-      // TBB is used to indicate the unconditinal destination.
-      TBB = I->getOperand(0).getMBB();
-      continue;
-    }
+  //    // TBB is used to indicate the unconditinal destination.
+  //    TBB = I->getOperand(0).getMBB();
+  //    continue;
+  //  }
 
-    // Handle conditional branches.
-    assert(I->getOpcode() == WDC65816::JCC && "Invalid conditional branch");
-    WDC65816CC::CondCodes BranchCode =
-      static_cast<WDC65816CC::CondCodes>(I->getOperand(1).getImm());
-    if (BranchCode == WDC65816CC::COND_INVALID)
-      return true;  // Can't handle weird stuff.
+  //  // Handle conditional branches.
+  //  assert(I->getOpcode() == WDC65816::JCC && "Invalid conditional branch");
+  //  WDC65816CC::CondCodes BranchCode =
+  //    static_cast<WDC65816CC::CondCodes>(I->getOperand(1).getImm());
+  //  if (BranchCode == WDC65816CC::COND_INVALID)
+  //    return true;  // Can't handle weird stuff.
 
-    // Working from the bottom, handle the first conditional branch.
-    if (Cond.empty()) {
-      FBB = TBB;
-      TBB = I->getOperand(0).getMBB();
-      Cond.push_back(MachineOperand::CreateImm(BranchCode));
-      continue;
-    }
+  //  // Working from the bottom, handle the first conditional branch.
+  //  if (Cond.empty()) {
+  //    FBB = TBB;
+  //    TBB = I->getOperand(0).getMBB();
+  //    Cond.push_back(MachineOperand::CreateImm(BranchCode));
+  //    continue;
+  //  }
 
-    // Handle subsequent conditional branches. Only handle the case where all
-    // conditional branches branch to the same destination.
-    assert(Cond.size() == 1);
-    assert(TBB);
+  //  // Handle subsequent conditional branches. Only handle the case where all
+  //  // conditional branches branch to the same destination.
+  //  assert(Cond.size() == 1);
+  //  assert(TBB);
 
-    // Only handle the case where all conditional branches branch to
-    // the same destination.
-    if (TBB != I->getOperand(0).getMBB())
-      return true;
+  //  // Only handle the case where all conditional branches branch to
+  //  // the same destination.
+  //  if (TBB != I->getOperand(0).getMBB())
+  //    return true;
 
-    WDC65816CC::CondCodes OldBranchCode = (WDC65816CC::CondCodes)Cond[0].getImm();
-    // If the conditions are the same, we can leave them alone.
-    if (OldBranchCode == BranchCode)
-      continue;
+  //  WDC65816CC::CondCodes OldBranchCode = (WDC65816CC::CondCodes)Cond[0].getImm();
+  //  // If the conditions are the same, we can leave them alone.
+  //  if (OldBranchCode == BranchCode)
+  //    continue;
 
-    return true;
-  }
+  //  return true;
+  //}
 
   return false;
 }
@@ -270,29 +270,30 @@ unsigned WDC65816InstrInfo::insertBranch(MachineBasicBlock &MBB,
                                        const DebugLoc &DL,
                                        int *BytesAdded) const {
   // Shouldn't be a fall through.
-  assert(TBB && "insertBranch must not be told to insert a fallthrough");
-  assert((Cond.size() == 1 || Cond.size() == 0) &&
-         "WDC65816 branch conditions have one component!");
-  assert(!BytesAdded && "code size not handled");
+  //assert(TBB && "insertBranch must not be told to insert a fallthrough");
+  //assert((Cond.size() == 1 || Cond.size() == 0) &&
+  //       "WDC65816 branch conditions have one component!");
+  //assert(!BytesAdded && "code size not handled");
 
-  if (Cond.empty()) {
-    // Unconditional branch?
-    assert(!FBB && "Unconditional branch with multiple successors!");
-    BuildMI(&MBB, DL, get(WDC65816::JMP)).addMBB(TBB);
-    return 1;
-  }
+  //if (Cond.empty()) {
+  //  // Unconditional branch?
+  //  assert(!FBB && "Unconditional branch with multiple successors!");
+  //  BuildMI(&MBB, DL, get(WDC65816::JMP)).addMBB(TBB);
+  //  return 1;
+  //}
 
-  // Conditional branch.
-  unsigned Count = 0;
-  BuildMI(&MBB, DL, get(WDC65816::JCC)).addMBB(TBB).addImm(Cond[0].getImm());
-  ++Count;
+  //// Conditional branch.
+  //unsigned Count = 0;
+  //BuildMI(&MBB, DL, get(WDC65816::JCC)).addMBB(TBB).addImm(Cond[0].getImm());
+  //++Count;
 
-  if (FBB) {
-    // Two-way Conditional branch. Insert the second branch.
-    BuildMI(&MBB, DL, get(WDC65816::JMP)).addMBB(FBB);
-    ++Count;
-  }
-  return Count;
+  //if (FBB) {
+  //  // Two-way Conditional branch. Insert the second branch.
+  //  BuildMI(&MBB, DL, get(WDC65816::JMP)).addMBB(FBB);
+  //  ++Count;
+  //}
+  //return Count;
+  return 0;
 }
 
 /// GetInstSize - Return the number of bytes of code the specified
@@ -301,20 +302,20 @@ unsigned WDC65816InstrInfo::insertBranch(MachineBasicBlock &MBB,
 unsigned WDC65816InstrInfo::getInstSizeInBytes(const MachineInstr &MI) const {
   const MCInstrDesc &Desc = MI.getDesc();
 
-  switch (Desc.getOpcode()) {
-  case TargetOpcode::CFI_INSTRUCTION:
-  case TargetOpcode::EH_LABEL:
-  case TargetOpcode::IMPLICIT_DEF:
-  case TargetOpcode::KILL:
-  case TargetOpcode::DBG_VALUE:
-    return 0;
-  case TargetOpcode::INLINEASM: {
-    const MachineFunction *MF = MI.getParent()->getParent();
-    const TargetInstrInfo &TII = *MF->getSubtarget().getInstrInfo();
-    return TII.getInlineAsmLength(MI.getOperand(0).getSymbolName(),
-                                  *MF->getTarget().getMCAsmInfo());
-  }
-  }
+  //switch (Desc.getOpcode()) {
+  //case TargetOpcode::CFI_INSTRUCTION:
+  //case TargetOpcode::EH_LABEL:
+  //case TargetOpcode::IMPLICIT_DEF:
+  //case TargetOpcode::KILL:
+  //case TargetOpcode::DBG_VALUE:
+  //  return 0;
+  //case TargetOpcode::INLINEASM: {
+  //  const MachineFunction *MF = MI.getParent()->getParent();
+  //  const TargetInstrInfo &TII = *MF->getSubtarget().getInstrInfo();
+  //  return TII.getInlineAsmLength(MI.getOperand(0).getSymbolName(),
+  //                                *MF->getTarget().getMCAsmInfo());
+  //}
+  //}
 
   return Desc.getSize();
 }

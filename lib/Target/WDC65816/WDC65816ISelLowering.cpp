@@ -42,292 +42,292 @@ WDC65816TargetLowering::WDC65816TargetLowering(const TargetMachine &TM,
                                            const WDC65816Subtarget &STI)
     : TargetLowering(TM) {
 
-  // Set up the register classes.
-  addRegisterClass(MVT::i8,  &WDC65816::GR8RegClass);
-  addRegisterClass(MVT::i16, &WDC65816::GR16RegClass);
+  //// Set up the register classes.
+  //addRegisterClass(MVT::i8,  &WDC65816::GR8RegClass);
+  //addRegisterClass(MVT::i16, &WDC65816::GR16RegClass);
 
-  // Compute derived properties from the register classes
-  computeRegisterProperties(STI.getRegisterInfo());
+  //// Compute derived properties from the register classes
+  //computeRegisterProperties(STI.getRegisterInfo());
 
-  // Provide all sorts of operation actions
-  setStackPointerRegisterToSaveRestore(WDC65816::SP);
-  setBooleanContents(ZeroOrOneBooleanContent);
-  setBooleanVectorContents(ZeroOrOneBooleanContent); // FIXME: Is this correct?
+  //// Provide all sorts of operation actions
+  //setStackPointerRegisterToSaveRestore(WDC65816::SP);
+  //setBooleanContents(ZeroOrOneBooleanContent);
+  //setBooleanVectorContents(ZeroOrOneBooleanContent); // FIXME: Is this correct?
 
-  // We have post-incremented loads / stores.
-  setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
-  setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);
+  //// We have post-incremented loads / stores.
+  //setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
+  //setIndexedLoadAction(ISD::POST_INC, MVT::i16, Legal);
 
-  for (MVT VT : MVT::integer_valuetypes()) {
-    setLoadExtAction(ISD::EXTLOAD,  VT, MVT::i1,  Promote);
-    setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i1,  Promote);
-    setLoadExtAction(ISD::ZEXTLOAD, VT, MVT::i1,  Promote);
-    setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i8,  Expand);
-    setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i16, Expand);
-  }
+  //for (MVT VT : MVT::integer_valuetypes()) {
+  //  setLoadExtAction(ISD::EXTLOAD,  VT, MVT::i1,  Promote);
+  //  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i1,  Promote);
+  //  setLoadExtAction(ISD::ZEXTLOAD, VT, MVT::i1,  Promote);
+  //  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i8,  Expand);
+  //  setLoadExtAction(ISD::SEXTLOAD, VT, MVT::i16, Expand);
+  //}
 
-  // We don't have any truncstores
-  setTruncStoreAction(MVT::i16, MVT::i8, Expand);
+  //// We don't have any truncstores
+  //setTruncStoreAction(MVT::i16, MVT::i8, Expand);
 
-  setOperationAction(ISD::SRA,              MVT::i8,    Custom);
-  setOperationAction(ISD::SHL,              MVT::i8,    Custom);
-  setOperationAction(ISD::SRL,              MVT::i8,    Custom);
-  setOperationAction(ISD::SRA,              MVT::i16,   Custom);
-  setOperationAction(ISD::SHL,              MVT::i16,   Custom);
-  setOperationAction(ISD::SRL,              MVT::i16,   Custom);
-  setOperationAction(ISD::ROTL,             MVT::i8,    Expand);
-  setOperationAction(ISD::ROTR,             MVT::i8,    Expand);
-  setOperationAction(ISD::ROTL,             MVT::i16,   Expand);
-  setOperationAction(ISD::ROTR,             MVT::i16,   Expand);
-  setOperationAction(ISD::GlobalAddress,    MVT::i16,   Custom);
-  setOperationAction(ISD::ExternalSymbol,   MVT::i16,   Custom);
-  setOperationAction(ISD::BlockAddress,     MVT::i16,   Custom);
-  setOperationAction(ISD::BR_JT,            MVT::Other, Expand);
-  setOperationAction(ISD::BR_CC,            MVT::i8,    Custom);
-  setOperationAction(ISD::BR_CC,            MVT::i16,   Custom);
-  setOperationAction(ISD::BRCOND,           MVT::Other, Expand);
-  setOperationAction(ISD::SETCC,            MVT::i8,    Custom);
-  setOperationAction(ISD::SETCC,            MVT::i16,   Custom);
-  setOperationAction(ISD::SELECT,           MVT::i8,    Expand);
-  setOperationAction(ISD::SELECT,           MVT::i16,   Expand);
-  setOperationAction(ISD::SELECT_CC,        MVT::i8,    Custom);
-  setOperationAction(ISD::SELECT_CC,        MVT::i16,   Custom);
-  setOperationAction(ISD::SIGN_EXTEND,      MVT::i16,   Custom);
-  setOperationAction(ISD::DYNAMIC_STACKALLOC, MVT::i8, Expand);
-  setOperationAction(ISD::DYNAMIC_STACKALLOC, MVT::i16, Expand);
+  //setOperationAction(ISD::SRA,              MVT::i8,    Custom);
+  //setOperationAction(ISD::SHL,              MVT::i8,    Custom);
+  //setOperationAction(ISD::SRL,              MVT::i8,    Custom);
+  //setOperationAction(ISD::SRA,              MVT::i16,   Custom);
+  //setOperationAction(ISD::SHL,              MVT::i16,   Custom);
+  //setOperationAction(ISD::SRL,              MVT::i16,   Custom);
+  //setOperationAction(ISD::ROTL,             MVT::i8,    Expand);
+  //setOperationAction(ISD::ROTR,             MVT::i8,    Expand);
+  //setOperationAction(ISD::ROTL,             MVT::i16,   Expand);
+  //setOperationAction(ISD::ROTR,             MVT::i16,   Expand);
+  //setOperationAction(ISD::GlobalAddress,    MVT::i16,   Custom);
+  //setOperationAction(ISD::ExternalSymbol,   MVT::i16,   Custom);
+  //setOperationAction(ISD::BlockAddress,     MVT::i16,   Custom);
+  //setOperationAction(ISD::BR_JT,            MVT::Other, Expand);
+  //setOperationAction(ISD::BR_CC,            MVT::i8,    Custom);
+  //setOperationAction(ISD::BR_CC,            MVT::i16,   Custom);
+  //setOperationAction(ISD::BRCOND,           MVT::Other, Expand);
+  //setOperationAction(ISD::SETCC,            MVT::i8,    Custom);
+  //setOperationAction(ISD::SETCC,            MVT::i16,   Custom);
+  //setOperationAction(ISD::SELECT,           MVT::i8,    Expand);
+  //setOperationAction(ISD::SELECT,           MVT::i16,   Expand);
+  //setOperationAction(ISD::SELECT_CC,        MVT::i8,    Custom);
+  //setOperationAction(ISD::SELECT_CC,        MVT::i16,   Custom);
+  //setOperationAction(ISD::SIGN_EXTEND,      MVT::i16,   Custom);
+  //setOperationAction(ISD::DYNAMIC_STACKALLOC, MVT::i8, Expand);
+  //setOperationAction(ISD::DYNAMIC_STACKALLOC, MVT::i16, Expand);
 
-  setOperationAction(ISD::CTTZ,             MVT::i8,    Expand);
-  setOperationAction(ISD::CTTZ,             MVT::i16,   Expand);
-  setOperationAction(ISD::CTLZ,             MVT::i8,    Expand);
-  setOperationAction(ISD::CTLZ,             MVT::i16,   Expand);
-  setOperationAction(ISD::CTPOP,            MVT::i8,    Expand);
-  setOperationAction(ISD::CTPOP,            MVT::i16,   Expand);
+  //setOperationAction(ISD::CTTZ,             MVT::i8,    Expand);
+  //setOperationAction(ISD::CTTZ,             MVT::i16,   Expand);
+  //setOperationAction(ISD::CTLZ,             MVT::i8,    Expand);
+  //setOperationAction(ISD::CTLZ,             MVT::i16,   Expand);
+  //setOperationAction(ISD::CTPOP,            MVT::i8,    Expand);
+  //setOperationAction(ISD::CTPOP,            MVT::i16,   Expand);
 
-  setOperationAction(ISD::SHL_PARTS,        MVT::i8,    Expand);
-  setOperationAction(ISD::SHL_PARTS,        MVT::i16,   Expand);
-  setOperationAction(ISD::SRL_PARTS,        MVT::i8,    Expand);
-  setOperationAction(ISD::SRL_PARTS,        MVT::i16,   Expand);
-  setOperationAction(ISD::SRA_PARTS,        MVT::i8,    Expand);
-  setOperationAction(ISD::SRA_PARTS,        MVT::i16,   Expand);
+  //setOperationAction(ISD::SHL_PARTS,        MVT::i8,    Expand);
+  //setOperationAction(ISD::SHL_PARTS,        MVT::i16,   Expand);
+  //setOperationAction(ISD::SRL_PARTS,        MVT::i8,    Expand);
+  //setOperationAction(ISD::SRL_PARTS,        MVT::i16,   Expand);
+  //setOperationAction(ISD::SRA_PARTS,        MVT::i8,    Expand);
+  //setOperationAction(ISD::SRA_PARTS,        MVT::i16,   Expand);
 
-  setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i1,   Expand);
+  //setOperationAction(ISD::SIGN_EXTEND_INREG, MVT::i1,   Expand);
 
-  // FIXME: Implement efficiently multiplication by a constant
-  setOperationAction(ISD::MUL,              MVT::i8,    Promote);
-  setOperationAction(ISD::MULHS,            MVT::i8,    Promote);
-  setOperationAction(ISD::MULHU,            MVT::i8,    Promote);
-  setOperationAction(ISD::SMUL_LOHI,        MVT::i8,    Promote);
-  setOperationAction(ISD::UMUL_LOHI,        MVT::i8,    Promote);
-  setOperationAction(ISD::MUL,              MVT::i16,   LibCall);
-  setOperationAction(ISD::MULHS,            MVT::i16,   Expand);
-  setOperationAction(ISD::MULHU,            MVT::i16,   Expand);
-  setOperationAction(ISD::SMUL_LOHI,        MVT::i16,   Expand);
-  setOperationAction(ISD::UMUL_LOHI,        MVT::i16,   Expand);
+  //// FIXME: Implement efficiently multiplication by a constant
+  //setOperationAction(ISD::MUL,              MVT::i8,    Promote);
+  //setOperationAction(ISD::MULHS,            MVT::i8,    Promote);
+  //setOperationAction(ISD::MULHU,            MVT::i8,    Promote);
+  //setOperationAction(ISD::SMUL_LOHI,        MVT::i8,    Promote);
+  //setOperationAction(ISD::UMUL_LOHI,        MVT::i8,    Promote);
+  //setOperationAction(ISD::MUL,              MVT::i16,   LibCall);
+  //setOperationAction(ISD::MULHS,            MVT::i16,   Expand);
+  //setOperationAction(ISD::MULHU,            MVT::i16,   Expand);
+  //setOperationAction(ISD::SMUL_LOHI,        MVT::i16,   Expand);
+  //setOperationAction(ISD::UMUL_LOHI,        MVT::i16,   Expand);
 
-  setOperationAction(ISD::UDIV,             MVT::i8,    Promote);
-  setOperationAction(ISD::UDIVREM,          MVT::i8,    Promote);
-  setOperationAction(ISD::UREM,             MVT::i8,    Promote);
-  setOperationAction(ISD::SDIV,             MVT::i8,    Promote);
-  setOperationAction(ISD::SDIVREM,          MVT::i8,    Promote);
-  setOperationAction(ISD::SREM,             MVT::i8,    Promote);
-  setOperationAction(ISD::UDIV,             MVT::i16,   LibCall);
-  setOperationAction(ISD::UDIVREM,          MVT::i16,   Expand);
-  setOperationAction(ISD::UREM,             MVT::i16,   LibCall);
-  setOperationAction(ISD::SDIV,             MVT::i16,   LibCall);
-  setOperationAction(ISD::SDIVREM,          MVT::i16,   Expand);
-  setOperationAction(ISD::SREM,             MVT::i16,   LibCall);
+  //setOperationAction(ISD::UDIV,             MVT::i8,    Promote);
+  //setOperationAction(ISD::UDIVREM,          MVT::i8,    Promote);
+  //setOperationAction(ISD::UREM,             MVT::i8,    Promote);
+  //setOperationAction(ISD::SDIV,             MVT::i8,    Promote);
+  //setOperationAction(ISD::SDIVREM,          MVT::i8,    Promote);
+  //setOperationAction(ISD::SREM,             MVT::i8,    Promote);
+  //setOperationAction(ISD::UDIV,             MVT::i16,   LibCall);
+  //setOperationAction(ISD::UDIVREM,          MVT::i16,   Expand);
+  //setOperationAction(ISD::UREM,             MVT::i16,   LibCall);
+  //setOperationAction(ISD::SDIV,             MVT::i16,   LibCall);
+  //setOperationAction(ISD::SDIVREM,          MVT::i16,   Expand);
+  //setOperationAction(ISD::SREM,             MVT::i16,   LibCall);
 
-  // varargs support
-  setOperationAction(ISD::VASTART,          MVT::Other, Custom);
-  setOperationAction(ISD::VAARG,            MVT::Other, Expand);
-  setOperationAction(ISD::VAEND,            MVT::Other, Expand);
-  setOperationAction(ISD::VACOPY,           MVT::Other, Expand);
-  setOperationAction(ISD::JumpTable,        MVT::i16,   Custom);
+  //// varargs support
+  //setOperationAction(ISD::VASTART,          MVT::Other, Custom);
+  //setOperationAction(ISD::VAARG,            MVT::Other, Expand);
+  //setOperationAction(ISD::VAEND,            MVT::Other, Expand);
+  //setOperationAction(ISD::VACOPY,           MVT::Other, Expand);
+  //setOperationAction(ISD::JumpTable,        MVT::i16,   Custom);
 
-  // EABI Libcalls - EABI Section 6.2
-  const struct {
-    const RTLIB::Libcall Op;
-    const char * const Name;
-    const ISD::CondCode Cond;
-  } LibraryCalls[] = {
-    // Floating point conversions - EABI Table 6
-    { RTLIB::FPROUND_F64_F32,   "__mspabi_cvtdf",   ISD::SETCC_INVALID },
-    { RTLIB::FPEXT_F32_F64,     "__mspabi_cvtfd",   ISD::SETCC_INVALID },
-    // The following is NOT implemented in libgcc
-    //{ RTLIB::FPTOSINT_F64_I16,  "__mspabi_fixdi", ISD::SETCC_INVALID },
-    { RTLIB::FPTOSINT_F64_I32,  "__mspabi_fixdli",  ISD::SETCC_INVALID },
-    { RTLIB::FPTOSINT_F64_I64,  "__mspabi_fixdlli", ISD::SETCC_INVALID },
-    // The following is NOT implemented in libgcc
-    //{ RTLIB::FPTOUINT_F64_I16,  "__mspabi_fixdu", ISD::SETCC_INVALID },
-    { RTLIB::FPTOUINT_F64_I32,  "__mspabi_fixdul",  ISD::SETCC_INVALID },
-    { RTLIB::FPTOUINT_F64_I64,  "__mspabi_fixdull", ISD::SETCC_INVALID },
-    // The following is NOT implemented in libgcc
-    //{ RTLIB::FPTOSINT_F32_I16,  "__mspabi_fixfi", ISD::SETCC_INVALID },
-    { RTLIB::FPTOSINT_F32_I32,  "__mspabi_fixfli",  ISD::SETCC_INVALID },
-    { RTLIB::FPTOSINT_F32_I64,  "__mspabi_fixflli", ISD::SETCC_INVALID },
-    // The following is NOT implemented in libgcc
-    //{ RTLIB::FPTOUINT_F32_I16,  "__mspabi_fixfu", ISD::SETCC_INVALID },
-    { RTLIB::FPTOUINT_F32_I32,  "__mspabi_fixful",  ISD::SETCC_INVALID },
-    { RTLIB::FPTOUINT_F32_I64,  "__mspabi_fixfull", ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc
-    //{ RTLIB::SINTTOFP_I16_F64,  "__mspabi_fltid", ISD::SETCC_INVALID },
-    { RTLIB::SINTTOFP_I32_F64,  "__mspabi_fltlid",  ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc but is not in the EABI
-    { RTLIB::SINTTOFP_I64_F64,  "__mspabi_fltllid", ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc
-    //{ RTLIB::UINTTOFP_I16_F64,  "__mspabi_fltud", ISD::SETCC_INVALID },
-    { RTLIB::UINTTOFP_I32_F64,  "__mspabi_fltuld",  ISD::SETCC_INVALID },
-    // The following IS implemented in libgcc but is not in the EABI
-    { RTLIB::UINTTOFP_I64_F64,  "__mspabi_fltulld", ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc
-    //{ RTLIB::SINTTOFP_I16_F32,  "__mspabi_fltif", ISD::SETCC_INVALID },
-    { RTLIB::SINTTOFP_I32_F32,  "__mspabi_fltlif",  ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc but is not in the EABI
-    { RTLIB::SINTTOFP_I64_F32,  "__mspabi_fltllif", ISD::SETCC_INVALID },
-    // TODO The following IS implemented in libgcc
-    //{ RTLIB::UINTTOFP_I16_F32,  "__mspabi_fltuf", ISD::SETCC_INVALID },
-    { RTLIB::UINTTOFP_I32_F32,  "__mspabi_fltulf",  ISD::SETCC_INVALID },
-    // The following IS implemented in libgcc but is not in the EABI
-    { RTLIB::UINTTOFP_I64_F32,  "__mspabi_fltullf", ISD::SETCC_INVALID },
+  //// EABI Libcalls - EABI Section 6.2
+  //const struct {
+  //  const RTLIB::Libcall Op;
+  //  const char * const Name;
+  //  const ISD::CondCode Cond;
+  //} LibraryCalls[] = {
+  //  // Floating point conversions - EABI Table 6
+  //  { RTLIB::FPROUND_F64_F32,   "__mspabi_cvtdf",   ISD::SETCC_INVALID },
+  //  { RTLIB::FPEXT_F32_F64,     "__mspabi_cvtfd",   ISD::SETCC_INVALID },
+  //  // The following is NOT implemented in libgcc
+  //  //{ RTLIB::FPTOSINT_F64_I16,  "__mspabi_fixdi", ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOSINT_F64_I32,  "__mspabi_fixdli",  ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOSINT_F64_I64,  "__mspabi_fixdlli", ISD::SETCC_INVALID },
+  //  // The following is NOT implemented in libgcc
+  //  //{ RTLIB::FPTOUINT_F64_I16,  "__mspabi_fixdu", ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOUINT_F64_I32,  "__mspabi_fixdul",  ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOUINT_F64_I64,  "__mspabi_fixdull", ISD::SETCC_INVALID },
+  //  // The following is NOT implemented in libgcc
+  //  //{ RTLIB::FPTOSINT_F32_I16,  "__mspabi_fixfi", ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOSINT_F32_I32,  "__mspabi_fixfli",  ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOSINT_F32_I64,  "__mspabi_fixflli", ISD::SETCC_INVALID },
+  //  // The following is NOT implemented in libgcc
+  //  //{ RTLIB::FPTOUINT_F32_I16,  "__mspabi_fixfu", ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOUINT_F32_I32,  "__mspabi_fixful",  ISD::SETCC_INVALID },
+  //  { RTLIB::FPTOUINT_F32_I64,  "__mspabi_fixfull", ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc
+  //  //{ RTLIB::SINTTOFP_I16_F64,  "__mspabi_fltid", ISD::SETCC_INVALID },
+  //  { RTLIB::SINTTOFP_I32_F64,  "__mspabi_fltlid",  ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc but is not in the EABI
+  //  { RTLIB::SINTTOFP_I64_F64,  "__mspabi_fltllid", ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc
+  //  //{ RTLIB::UINTTOFP_I16_F64,  "__mspabi_fltud", ISD::SETCC_INVALID },
+  //  { RTLIB::UINTTOFP_I32_F64,  "__mspabi_fltuld",  ISD::SETCC_INVALID },
+  //  // The following IS implemented in libgcc but is not in the EABI
+  //  { RTLIB::UINTTOFP_I64_F64,  "__mspabi_fltulld", ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc
+  //  //{ RTLIB::SINTTOFP_I16_F32,  "__mspabi_fltif", ISD::SETCC_INVALID },
+  //  { RTLIB::SINTTOFP_I32_F32,  "__mspabi_fltlif",  ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc but is not in the EABI
+  //  { RTLIB::SINTTOFP_I64_F32,  "__mspabi_fltllif", ISD::SETCC_INVALID },
+  //  // TODO The following IS implemented in libgcc
+  //  //{ RTLIB::UINTTOFP_I16_F32,  "__mspabi_fltuf", ISD::SETCC_INVALID },
+  //  { RTLIB::UINTTOFP_I32_F32,  "__mspabi_fltulf",  ISD::SETCC_INVALID },
+  //  // The following IS implemented in libgcc but is not in the EABI
+  //  { RTLIB::UINTTOFP_I64_F32,  "__mspabi_fltullf", ISD::SETCC_INVALID },
 
-    // Floating point comparisons - EABI Table 7
-    { RTLIB::OEQ_F64, "__mspabi_cmpd", ISD::SETEQ },
-    { RTLIB::UNE_F64, "__mspabi_cmpd", ISD::SETNE },
-    { RTLIB::OGE_F64, "__mspabi_cmpd", ISD::SETGE },
-    { RTLIB::OLT_F64, "__mspabi_cmpd", ISD::SETLT },
-    { RTLIB::OLE_F64, "__mspabi_cmpd", ISD::SETLE },
-    { RTLIB::OGT_F64, "__mspabi_cmpd", ISD::SETGT },
-    { RTLIB::OEQ_F32, "__mspabi_cmpf", ISD::SETEQ },
-    { RTLIB::UNE_F32, "__mspabi_cmpf", ISD::SETNE },
-    { RTLIB::OGE_F32, "__mspabi_cmpf", ISD::SETGE },
-    { RTLIB::OLT_F32, "__mspabi_cmpf", ISD::SETLT },
-    { RTLIB::OLE_F32, "__mspabi_cmpf", ISD::SETLE },
-    { RTLIB::OGT_F32, "__mspabi_cmpf", ISD::SETGT },
+  //  // Floating point comparisons - EABI Table 7
+  //  { RTLIB::OEQ_F64, "__mspabi_cmpd", ISD::SETEQ },
+  //  { RTLIB::UNE_F64, "__mspabi_cmpd", ISD::SETNE },
+  //  { RTLIB::OGE_F64, "__mspabi_cmpd", ISD::SETGE },
+  //  { RTLIB::OLT_F64, "__mspabi_cmpd", ISD::SETLT },
+  //  { RTLIB::OLE_F64, "__mspabi_cmpd", ISD::SETLE },
+  //  { RTLIB::OGT_F64, "__mspabi_cmpd", ISD::SETGT },
+  //  { RTLIB::OEQ_F32, "__mspabi_cmpf", ISD::SETEQ },
+  //  { RTLIB::UNE_F32, "__mspabi_cmpf", ISD::SETNE },
+  //  { RTLIB::OGE_F32, "__mspabi_cmpf", ISD::SETGE },
+  //  { RTLIB::OLT_F32, "__mspabi_cmpf", ISD::SETLT },
+  //  { RTLIB::OLE_F32, "__mspabi_cmpf", ISD::SETLE },
+  //  { RTLIB::OGT_F32, "__mspabi_cmpf", ISD::SETGT },
 
-    // Floating point arithmetic - EABI Table 8
-    { RTLIB::ADD_F64,  "__mspabi_addd", ISD::SETCC_INVALID },
-    { RTLIB::ADD_F32,  "__mspabi_addf", ISD::SETCC_INVALID },
-    { RTLIB::DIV_F64,  "__mspabi_divd", ISD::SETCC_INVALID },
-    { RTLIB::DIV_F32,  "__mspabi_divf", ISD::SETCC_INVALID },
-    { RTLIB::MUL_F64,  "__mspabi_mpyd", ISD::SETCC_INVALID },
-    { RTLIB::MUL_F32,  "__mspabi_mpyf", ISD::SETCC_INVALID },
-    { RTLIB::SUB_F64,  "__mspabi_subd", ISD::SETCC_INVALID },
-    { RTLIB::SUB_F32,  "__mspabi_subf", ISD::SETCC_INVALID },
-    // The following are NOT implemented in libgcc
-    // { RTLIB::NEG_F64,  "__mspabi_negd", ISD::SETCC_INVALID },
-    // { RTLIB::NEG_F32,  "__mspabi_negf", ISD::SETCC_INVALID },
+  //  // Floating point arithmetic - EABI Table 8
+  //  { RTLIB::ADD_F64,  "__mspabi_addd", ISD::SETCC_INVALID },
+  //  { RTLIB::ADD_F32,  "__mspabi_addf", ISD::SETCC_INVALID },
+  //  { RTLIB::DIV_F64,  "__mspabi_divd", ISD::SETCC_INVALID },
+  //  { RTLIB::DIV_F32,  "__mspabi_divf", ISD::SETCC_INVALID },
+  //  { RTLIB::MUL_F64,  "__mspabi_mpyd", ISD::SETCC_INVALID },
+  //  { RTLIB::MUL_F32,  "__mspabi_mpyf", ISD::SETCC_INVALID },
+  //  { RTLIB::SUB_F64,  "__mspabi_subd", ISD::SETCC_INVALID },
+  //  { RTLIB::SUB_F32,  "__mspabi_subf", ISD::SETCC_INVALID },
+  //  // The following are NOT implemented in libgcc
+  //  // { RTLIB::NEG_F64,  "__mspabi_negd", ISD::SETCC_INVALID },
+  //  // { RTLIB::NEG_F32,  "__mspabi_negf", ISD::SETCC_INVALID },
 
-    // Universal Integer Operations - EABI Table 9
-    { RTLIB::SDIV_I16,   "__mspabi_divi", ISD::SETCC_INVALID },
-    { RTLIB::SDIV_I32,   "__mspabi_divli", ISD::SETCC_INVALID },
-    { RTLIB::SDIV_I64,   "__mspabi_divlli", ISD::SETCC_INVALID },
-    { RTLIB::UDIV_I16,   "__mspabi_divu", ISD::SETCC_INVALID },
-    { RTLIB::UDIV_I32,   "__mspabi_divul", ISD::SETCC_INVALID },
-    { RTLIB::UDIV_I64,   "__mspabi_divull", ISD::SETCC_INVALID },
-    { RTLIB::SREM_I16,   "__mspabi_remi", ISD::SETCC_INVALID },
-    { RTLIB::SREM_I32,   "__mspabi_remli", ISD::SETCC_INVALID },
-    { RTLIB::SREM_I64,   "__mspabi_remlli", ISD::SETCC_INVALID },
-    { RTLIB::UREM_I16,   "__mspabi_remu", ISD::SETCC_INVALID },
-    { RTLIB::UREM_I32,   "__mspabi_remul", ISD::SETCC_INVALID },
-    { RTLIB::UREM_I64,   "__mspabi_remull", ISD::SETCC_INVALID },
+  //  // Universal Integer Operations - EABI Table 9
+  //  { RTLIB::SDIV_I16,   "__mspabi_divi", ISD::SETCC_INVALID },
+  //  { RTLIB::SDIV_I32,   "__mspabi_divli", ISD::SETCC_INVALID },
+  //  { RTLIB::SDIV_I64,   "__mspabi_divlli", ISD::SETCC_INVALID },
+  //  { RTLIB::UDIV_I16,   "__mspabi_divu", ISD::SETCC_INVALID },
+  //  { RTLIB::UDIV_I32,   "__mspabi_divul", ISD::SETCC_INVALID },
+  //  { RTLIB::UDIV_I64,   "__mspabi_divull", ISD::SETCC_INVALID },
+  //  { RTLIB::SREM_I16,   "__mspabi_remi", ISD::SETCC_INVALID },
+  //  { RTLIB::SREM_I32,   "__mspabi_remli", ISD::SETCC_INVALID },
+  //  { RTLIB::SREM_I64,   "__mspabi_remlli", ISD::SETCC_INVALID },
+  //  { RTLIB::UREM_I16,   "__mspabi_remu", ISD::SETCC_INVALID },
+  //  { RTLIB::UREM_I32,   "__mspabi_remul", ISD::SETCC_INVALID },
+  //  { RTLIB::UREM_I64,   "__mspabi_remull", ISD::SETCC_INVALID },
 
-    // Bitwise Operations - EABI Table 10
-    // TODO: __mspabi_[srli/srai/slli] ARE implemented in libgcc
-    { RTLIB::SRL_I32,    "__mspabi_srll", ISD::SETCC_INVALID },
-    { RTLIB::SRA_I32,    "__mspabi_sral", ISD::SETCC_INVALID },
-    { RTLIB::SHL_I32,    "__mspabi_slll", ISD::SETCC_INVALID },
-    // __mspabi_[srlll/srall/sllll/rlli/rlll] are NOT implemented in libgcc
+  //  // Bitwise Operations - EABI Table 10
+  //  // TODO: __mspabi_[srli/srai/slli] ARE implemented in libgcc
+  //  { RTLIB::SRL_I32,    "__mspabi_srll", ISD::SETCC_INVALID },
+  //  { RTLIB::SRA_I32,    "__mspabi_sral", ISD::SETCC_INVALID },
+  //  { RTLIB::SHL_I32,    "__mspabi_slll", ISD::SETCC_INVALID },
+  //  // __mspabi_[srlll/srall/sllll/rlli/rlll] are NOT implemented in libgcc
 
-  };
+  //};
 
-  for (const auto &LC : LibraryCalls) {
-    setLibcallName(LC.Op, LC.Name);
-    if (LC.Cond != ISD::SETCC_INVALID)
-      setCmpLibcallCC(LC.Op, LC.Cond);
-  }
+  //for (const auto &LC : LibraryCalls) {
+  //  setLibcallName(LC.Op, LC.Name);
+  //  if (LC.Cond != ISD::SETCC_INVALID)
+  //    setCmpLibcallCC(LC.Op, LC.Cond);
+  //}
 
-  if (STI.hasHWMult16()) {
-    const struct {
-      const RTLIB::Libcall Op;
-      const char * const Name;
-    } LibraryCalls[] = {
-      // Integer Multiply - EABI Table 9
-      { RTLIB::MUL_I16,   "__mspabi_mpyi_hw" },
-      { RTLIB::MUL_I32,   "__mspabi_mpyl_hw" },
-      { RTLIB::MUL_I64,   "__mspabi_mpyll_hw" },
-      // TODO The __mspabi_mpysl*_hw functions ARE implemented in libgcc
-      // TODO The __mspabi_mpyul*_hw functions ARE implemented in libgcc
-    };
-    for (const auto &LC : LibraryCalls) {
-      setLibcallName(LC.Op, LC.Name);
-    }
-  } else if (STI.hasHWMult32()) {
-    const struct {
-      const RTLIB::Libcall Op;
-      const char * const Name;
-    } LibraryCalls[] = {
-      // Integer Multiply - EABI Table 9
-      { RTLIB::MUL_I16,   "__mspabi_mpyi_hw" },
-      { RTLIB::MUL_I32,   "__mspabi_mpyl_hw32" },
-      { RTLIB::MUL_I64,   "__mspabi_mpyll_hw32" },
-      // TODO The __mspabi_mpysl*_hw32 functions ARE implemented in libgcc
-      // TODO The __mspabi_mpyul*_hw32 functions ARE implemented in libgcc
-    };
-    for (const auto &LC : LibraryCalls) {
-      setLibcallName(LC.Op, LC.Name);
-    }
-  } else if (STI.hasHWMultF5()) {
-    const struct {
-      const RTLIB::Libcall Op;
-      const char * const Name;
-    } LibraryCalls[] = {
-      // Integer Multiply - EABI Table 9
-      { RTLIB::MUL_I16,   "__mspabi_mpyi_f5hw" },
-      { RTLIB::MUL_I32,   "__mspabi_mpyl_f5hw" },
-      { RTLIB::MUL_I64,   "__mspabi_mpyll_f5hw" },
-      // TODO The __mspabi_mpysl*_f5hw functions ARE implemented in libgcc
-      // TODO The __mspabi_mpyul*_f5hw functions ARE implemented in libgcc
-    };
-    for (const auto &LC : LibraryCalls) {
-      setLibcallName(LC.Op, LC.Name);
-    }
-  } else { // NoHWMult
-    const struct {
-      const RTLIB::Libcall Op;
-      const char * const Name;
-    } LibraryCalls[] = {
-      // Integer Multiply - EABI Table 9
-      { RTLIB::MUL_I16,   "__mspabi_mpyi" },
-      { RTLIB::MUL_I32,   "__mspabi_mpyl" },
-      { RTLIB::MUL_I64,   "__mspabi_mpyll" },
-      // The __mspabi_mpysl* functions are NOT implemented in libgcc
-      // The __mspabi_mpyul* functions are NOT implemented in libgcc
-    };
-    for (const auto &LC : LibraryCalls) {
-      setLibcallName(LC.Op, LC.Name);
-    }
-    setLibcallCallingConv(RTLIB::MUL_I64, CallingConv::WDC65816_BUILTIN);
-  }
+  //if (STI.hasHWMult16()) {
+  //  const struct {
+  //    const RTLIB::Libcall Op;
+  //    const char * const Name;
+  //  } LibraryCalls[] = {
+  //    // Integer Multiply - EABI Table 9
+  //    { RTLIB::MUL_I16,   "__mspabi_mpyi_hw" },
+  //    { RTLIB::MUL_I32,   "__mspabi_mpyl_hw" },
+  //    { RTLIB::MUL_I64,   "__mspabi_mpyll_hw" },
+  //    // TODO The __mspabi_mpysl*_hw functions ARE implemented in libgcc
+  //    // TODO The __mspabi_mpyul*_hw functions ARE implemented in libgcc
+  //  };
+  //  for (const auto &LC : LibraryCalls) {
+  //    setLibcallName(LC.Op, LC.Name);
+  //  }
+  //} else if (STI.hasHWMult32()) {
+  //  const struct {
+  //    const RTLIB::Libcall Op;
+  //    const char * const Name;
+  //  } LibraryCalls[] = {
+  //    // Integer Multiply - EABI Table 9
+  //    { RTLIB::MUL_I16,   "__mspabi_mpyi_hw" },
+  //    { RTLIB::MUL_I32,   "__mspabi_mpyl_hw32" },
+  //    { RTLIB::MUL_I64,   "__mspabi_mpyll_hw32" },
+  //    // TODO The __mspabi_mpysl*_hw32 functions ARE implemented in libgcc
+  //    // TODO The __mspabi_mpyul*_hw32 functions ARE implemented in libgcc
+  //  };
+  //  for (const auto &LC : LibraryCalls) {
+  //    setLibcallName(LC.Op, LC.Name);
+  //  }
+  //} else if (STI.hasHWMultF5()) {
+  //  const struct {
+  //    const RTLIB::Libcall Op;
+  //    const char * const Name;
+  //  } LibraryCalls[] = {
+  //    // Integer Multiply - EABI Table 9
+  //    { RTLIB::MUL_I16,   "__mspabi_mpyi_f5hw" },
+  //    { RTLIB::MUL_I32,   "__mspabi_mpyl_f5hw" },
+  //    { RTLIB::MUL_I64,   "__mspabi_mpyll_f5hw" },
+  //    // TODO The __mspabi_mpysl*_f5hw functions ARE implemented in libgcc
+  //    // TODO The __mspabi_mpyul*_f5hw functions ARE implemented in libgcc
+  //  };
+  //  for (const auto &LC : LibraryCalls) {
+  //    setLibcallName(LC.Op, LC.Name);
+  //  }
+  //} else { // NoHWMult
+  //  const struct {
+  //    const RTLIB::Libcall Op;
+  //    const char * const Name;
+  //  } LibraryCalls[] = {
+  //    // Integer Multiply - EABI Table 9
+  //    { RTLIB::MUL_I16,   "__mspabi_mpyi" },
+  //    { RTLIB::MUL_I32,   "__mspabi_mpyl" },
+  //    { RTLIB::MUL_I64,   "__mspabi_mpyll" },
+  //    // The __mspabi_mpysl* functions are NOT implemented in libgcc
+  //    // The __mspabi_mpyul* functions are NOT implemented in libgcc
+  //  };
+  //  for (const auto &LC : LibraryCalls) {
+  //    setLibcallName(LC.Op, LC.Name);
+  //  }
+  //  setLibcallCallingConv(RTLIB::MUL_I64, CallingConv::WDC65816_BUILTIN);
+  //}
 
-  // Several of the runtime library functions use a special calling conv
-  setLibcallCallingConv(RTLIB::UDIV_I64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::UREM_I64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::SDIV_I64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::SREM_I64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::ADD_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::SUB_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::MUL_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::DIV_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::OEQ_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::UNE_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::OGE_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::OLT_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::OLE_F64, CallingConv::WDC65816_BUILTIN);
-  setLibcallCallingConv(RTLIB::OGT_F64, CallingConv::WDC65816_BUILTIN);
-  // TODO: __mspabi_srall, __mspabi_srlll, __mspabi_sllll
+  //// Several of the runtime library functions use a special calling conv
+  //setLibcallCallingConv(RTLIB::UDIV_I64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::UREM_I64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::SDIV_I64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::SREM_I64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::ADD_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::SUB_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::MUL_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::DIV_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::OEQ_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::UNE_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::OGE_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::OLT_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::OLE_F64, CallingConv::WDC65816_BUILTIN);
+  //setLibcallCallingConv(RTLIB::OGT_F64, CallingConv::WDC65816_BUILTIN);
+  //// TODO: __mspabi_srall, __mspabi_srlll, __mspabi_sllll
 
-  setMinFunctionAlignment(1);
-  setPrefFunctionAlignment(1);
+  //setMinFunctionAlignment(1);
+  //setPrefFunctionAlignment(1);
 }
 
 SDValue WDC65816TargetLowering::LowerOperation(SDValue Op,
@@ -374,17 +374,17 @@ WDC65816TargetLowering::getConstraintType(StringRef Constraint) const {
 std::pair<unsigned, const TargetRegisterClass *>
 WDC65816TargetLowering::getRegForInlineAsmConstraint(
     const TargetRegisterInfo *TRI, StringRef Constraint, MVT VT) const {
-  if (Constraint.size() == 1) {
-    // GCC Constraint Letters
-    switch (Constraint[0]) {
-    default: break;
-    case 'r':   // GENERAL_REGS
-      if (VT == MVT::i8)
-        return std::make_pair(0U, &WDC65816::GR8RegClass);
+  //if (Constraint.size() == 1) {
+  //  // GCC Constraint Letters
+  //  switch (Constraint[0]) {
+  //  default: break;
+  //  case 'r':   // GENERAL_REGS
+  //    if (VT == MVT::i8)
+  //      return std::make_pair(0U, &WDC65816::GR8RegClass);
 
-      return std::make_pair(0U, &WDC65816::GR16RegClass);
-    }
-  }
+  //    return std::make_pair(0U, &WDC65816::GR16RegClass);
+  //  }
+  //}
 
   return TargetLowering::getRegForInlineAsmConstraint(TRI, Constraint, VT);
 }
@@ -420,12 +420,12 @@ static void ParseFunctionArgs(const SmallVectorImpl<ArgT> &Args,
 
 static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::OutputArg> &Outs) {
-  State.AnalyzeCallOperands(Outs, CC_WDC65816_AssignStack);
+  //State.AnalyzeCallOperands(Outs, CC_WDC65816_AssignStack);
 }
 
 static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::InputArg> &Ins) {
-  State.AnalyzeFormalArguments(Ins, CC_WDC65816_AssignStack);
+  //State.AnalyzeFormalArguments(Ins, CC_WDC65816_AssignStack);
 }
 
 /// Analyze incoming and outgoing function arguments. We need custom C++ code
@@ -436,105 +436,105 @@ template<typename ArgT>
 static void AnalyzeArguments(CCState &State,
                              SmallVectorImpl<CCValAssign> &ArgLocs,
                              const SmallVectorImpl<ArgT> &Args) {
-  static const MCPhysReg CRegList[] = {
-    WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
-  };
-  static const unsigned CNbRegs = array_lengthof(CRegList);
-  static const MCPhysReg BuiltinRegList[] = {
-    WDC65816::R8, WDC65816::R9, WDC65816::R10, WDC65816::R11,
-    WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
-  };
-  static const unsigned BuiltinNbRegs = array_lengthof(BuiltinRegList);
+  //static const MCPhysReg CRegList[] = {
+  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
+  //};
+  //static const unsigned CNbRegs = array_lengthof(CRegList);
+  //static const MCPhysReg BuiltinRegList[] = {
+  //  WDC65816::R8, WDC65816::R9, WDC65816::R10, WDC65816::R11,
+  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
+  //};
+  //static const unsigned BuiltinNbRegs = array_lengthof(BuiltinRegList);
 
-  ArrayRef<MCPhysReg> RegList;
-  unsigned NbRegs;
+  //ArrayRef<MCPhysReg> RegList;
+  //unsigned NbRegs;
 
-  bool Builtin = (State.getCallingConv() == CallingConv::WDC65816_BUILTIN);
-  if (Builtin) {
-    RegList = BuiltinRegList;
-    NbRegs = BuiltinNbRegs;
-  } else {
-    RegList = CRegList;
-    NbRegs = CNbRegs;
-  }
+  //bool Builtin = (State.getCallingConv() == CallingConv::WDC65816_BUILTIN);
+  //if (Builtin) {
+  //  RegList = BuiltinRegList;
+  //  NbRegs = BuiltinNbRegs;
+  //} else {
+  //  RegList = CRegList;
+  //  NbRegs = CNbRegs;
+  //}
 
-  if (State.isVarArg()) {
-    AnalyzeVarArgs(State, Args);
-    return;
-  }
+  //if (State.isVarArg()) {
+  //  AnalyzeVarArgs(State, Args);
+  //  return;
+  //}
 
-  SmallVector<unsigned, 4> ArgsParts;
-  ParseFunctionArgs(Args, ArgsParts);
+  //SmallVector<unsigned, 4> ArgsParts;
+  //ParseFunctionArgs(Args, ArgsParts);
 
-  if (Builtin) {
-    assert(ArgsParts.size() == 2 &&
-        "Builtin calling convention requires two arguments");
-  }
+  //if (Builtin) {
+  //  assert(ArgsParts.size() == 2 &&
+  //      "Builtin calling convention requires two arguments");
+  //}
 
-  unsigned RegsLeft = NbRegs;
-  bool UsedStack = false;
-  unsigned ValNo = 0;
+  //unsigned RegsLeft = NbRegs;
+  //bool UsedStack = false;
+  //unsigned ValNo = 0;
 
-  for (unsigned i = 0, e = ArgsParts.size(); i != e; i++) {
-    MVT ArgVT = Args[ValNo].VT;
-    ISD::ArgFlagsTy ArgFlags = Args[ValNo].Flags;
-    MVT LocVT = ArgVT;
-    CCValAssign::LocInfo LocInfo = CCValAssign::Full;
+  //for (unsigned i = 0, e = ArgsParts.size(); i != e; i++) {
+  //  MVT ArgVT = Args[ValNo].VT;
+  //  ISD::ArgFlagsTy ArgFlags = Args[ValNo].Flags;
+  //  MVT LocVT = ArgVT;
+  //  CCValAssign::LocInfo LocInfo = CCValAssign::Full;
 
-    // Promote i8 to i16
-    if (LocVT == MVT::i8) {
-      LocVT = MVT::i16;
-      if (ArgFlags.isSExt())
-          LocInfo = CCValAssign::SExt;
-      else if (ArgFlags.isZExt())
-          LocInfo = CCValAssign::ZExt;
-      else
-          LocInfo = CCValAssign::AExt;
-    }
+  //  // Promote i8 to i16
+  //  if (LocVT == MVT::i8) {
+  //    LocVT = MVT::i16;
+  //    if (ArgFlags.isSExt())
+  //        LocInfo = CCValAssign::SExt;
+  //    else if (ArgFlags.isZExt())
+  //        LocInfo = CCValAssign::ZExt;
+  //    else
+  //        LocInfo = CCValAssign::AExt;
+  //  }
 
-    // Handle byval arguments
-    if (ArgFlags.isByVal()) {
-      State.HandleByVal(ValNo++, ArgVT, LocVT, LocInfo, 2, 2, ArgFlags);
-      continue;
-    }
+  //  // Handle byval arguments
+  //  if (ArgFlags.isByVal()) {
+  //    State.HandleByVal(ValNo++, ArgVT, LocVT, LocInfo, 2, 2, ArgFlags);
+  //    continue;
+  //  }
 
-    unsigned Parts = ArgsParts[i];
+  //  unsigned Parts = ArgsParts[i];
 
-    if (Builtin) {
-      assert(Parts == 4 &&
-          "Builtin calling convention requires 64-bit arguments");
-    }
+  //  if (Builtin) {
+  //    assert(Parts == 4 &&
+  //        "Builtin calling convention requires 64-bit arguments");
+  //  }
 
-    if (!UsedStack && Parts == 2 && RegsLeft == 1) {
-      // Special case for 32-bit register split, see EABI section 3.3.3
-      unsigned Reg = State.AllocateReg(RegList);
-      State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
-      RegsLeft -= 1;
+  //  if (!UsedStack && Parts == 2 && RegsLeft == 1) {
+  //    // Special case for 32-bit register split, see EABI section 3.3.3
+  //    unsigned Reg = State.AllocateReg(RegList);
+  //    State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
+  //    RegsLeft -= 1;
 
-      UsedStack = true;
-      CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
-    } else if (Parts <= RegsLeft) {
-      for (unsigned j = 0; j < Parts; j++) {
-        unsigned Reg = State.AllocateReg(RegList);
-        State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
-        RegsLeft--;
-      }
-    } else {
-      UsedStack = true;
-      for (unsigned j = 0; j < Parts; j++)
-        CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
-    }
-  }
+  //    UsedStack = true;
+  //    CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
+  //  } else if (Parts <= RegsLeft) {
+  //    for (unsigned j = 0; j < Parts; j++) {
+  //      unsigned Reg = State.AllocateReg(RegList);
+  //      State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
+  //      RegsLeft--;
+  //    }
+  //  } else {
+  //    UsedStack = true;
+  //    for (unsigned j = 0; j < Parts; j++)
+  //      CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
+  //  }
+  //}
 }
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::InputArg> &Ins) {
-  State.AnalyzeCallResult(Ins, RetCC_WDC65816);
+  //State.AnalyzeCallResult(Ins, RetCC_WDC65816);
 }
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::OutputArg> &Outs) {
-  State.AnalyzeReturn(Outs, RetCC_WDC65816);
+  //State.AnalyzeReturn(Outs, RetCC_WDC65816);
 }
 
 template<typename ArgT>
@@ -601,7 +601,7 @@ SDValue WDC65816TargetLowering::LowerCCCArguments(
     SelectionDAG &DAG, SmallVectorImpl<SDValue> &InVals) const {
   MachineFunction &MF = DAG.getMachineFunction();
   MachineFrameInfo &MFI = MF.getFrameInfo();
-  MachineRegisterInfo &RegInfo = MF.getRegInfo();
+  //MachineRegisterInfo &RegInfo = MF.getRegInfo();
   WDC65816MachineFunctionInfo *FuncInfo = MF.getInfo<WDC65816MachineFunctionInfo>();
 
   // Assign locations to all of the incoming arguments.
@@ -616,73 +616,73 @@ SDValue WDC65816TargetLowering::LowerCCCArguments(
     FuncInfo->setVarArgsFrameIndex(MFI.CreateFixedObject(1, Offset, true));
   }
 
-  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
-    CCValAssign &VA = ArgLocs[i];
-    if (VA.isRegLoc()) {
-      // Arguments passed in registers
-      EVT RegVT = VA.getLocVT();
-      switch (RegVT.getSimpleVT().SimpleTy) {
-      default:
-        {
-#ifndef NDEBUG
-          errs() << "LowerFormalArguments Unhandled argument type: "
-               << RegVT.getEVTString() << "\n";
-#endif
-          llvm_unreachable(nullptr);
-        }
-      case MVT::i16:
-        unsigned VReg = RegInfo.createVirtualRegister(&WDC65816::GR16RegClass);
-        RegInfo.addLiveIn(VA.getLocReg(), VReg);
-        SDValue ArgValue = DAG.getCopyFromReg(Chain, dl, VReg, RegVT);
-
-        // If this is an 8-bit value, it is really passed promoted to 16
-        // bits. Insert an assert[sz]ext to capture this, then truncate to the
-        // right size.
-        if (VA.getLocInfo() == CCValAssign::SExt)
-          ArgValue = DAG.getNode(ISD::AssertSext, dl, RegVT, ArgValue,
-                                 DAG.getValueType(VA.getValVT()));
-        else if (VA.getLocInfo() == CCValAssign::ZExt)
-          ArgValue = DAG.getNode(ISD::AssertZext, dl, RegVT, ArgValue,
-                                 DAG.getValueType(VA.getValVT()));
-
-        if (VA.getLocInfo() != CCValAssign::Full)
-          ArgValue = DAG.getNode(ISD::TRUNCATE, dl, VA.getValVT(), ArgValue);
-
-        InVals.push_back(ArgValue);
-      }
-    } else {
-      // Sanity check
-      assert(VA.isMemLoc());
-
-      SDValue InVal;
-      ISD::ArgFlagsTy Flags = Ins[i].Flags;
-
-      if (Flags.isByVal()) {
-        int FI = MFI.CreateFixedObject(Flags.getByValSize(),
-                                       VA.getLocMemOffset(), true);
-        InVal = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
-      } else {
-        // Load the argument to a virtual register
-        unsigned ObjSize = VA.getLocVT().getSizeInBits()/8;
-        if (ObjSize > 2) {
-            errs() << "LowerFormalArguments Unhandled argument type: "
-                << EVT(VA.getLocVT()).getEVTString()
-                << "\n";
-        }
-        // Create the frame index object for this incoming parameter...
-        int FI = MFI.CreateFixedObject(ObjSize, VA.getLocMemOffset(), true);
-
-        // Create the SelectionDAG nodes corresponding to a load
-        //from this parameter
-        SDValue FIN = DAG.getFrameIndex(FI, MVT::i16);
-        InVal = DAG.getLoad(
-            VA.getLocVT(), dl, Chain, FIN,
-            MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), FI));
-      }
-
-      InVals.push_back(InVal);
-    }
-  }
+//  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
+//    CCValAssign &VA = ArgLocs[i];
+//    if (VA.isRegLoc()) {
+//      // Arguments passed in registers
+//      EVT RegVT = VA.getLocVT();
+//      switch (RegVT.getSimpleVT().SimpleTy) {
+//      default:
+//        {
+//#ifndef NDEBUG
+//          errs() << "LowerFormalArguments Unhandled argument type: "
+//               << RegVT.getEVTString() << "\n";
+//#endif
+//          llvm_unreachable(nullptr);
+//        }
+//      case MVT::i16:
+//        unsigned VReg = RegInfo.createVirtualRegister(&WDC65816::GR16RegClass);
+//        RegInfo.addLiveIn(VA.getLocReg(), VReg);
+//        SDValue ArgValue = DAG.getCopyFromReg(Chain, dl, VReg, RegVT);
+//
+//        // If this is an 8-bit value, it is really passed promoted to 16
+//        // bits. Insert an assert[sz]ext to capture this, then truncate to the
+//        // right size.
+//        if (VA.getLocInfo() == CCValAssign::SExt)
+//          ArgValue = DAG.getNode(ISD::AssertSext, dl, RegVT, ArgValue,
+//                                 DAG.getValueType(VA.getValVT()));
+//        else if (VA.getLocInfo() == CCValAssign::ZExt)
+//          ArgValue = DAG.getNode(ISD::AssertZext, dl, RegVT, ArgValue,
+//                                 DAG.getValueType(VA.getValVT()));
+//
+//        if (VA.getLocInfo() != CCValAssign::Full)
+//          ArgValue = DAG.getNode(ISD::TRUNCATE, dl, VA.getValVT(), ArgValue);
+//
+//        InVals.push_back(ArgValue);
+//      }
+//    } else {
+//      // Sanity check
+//      assert(VA.isMemLoc());
+//
+//      SDValue InVal;
+//      ISD::ArgFlagsTy Flags = Ins[i].Flags;
+//
+//      if (Flags.isByVal()) {
+//        int FI = MFI.CreateFixedObject(Flags.getByValSize(),
+//                                       VA.getLocMemOffset(), true);
+//        InVal = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
+//      } else {
+//        // Load the argument to a virtual register
+//        unsigned ObjSize = VA.getLocVT().getSizeInBits()/8;
+//        if (ObjSize > 2) {
+//            errs() << "LowerFormalArguments Unhandled argument type: "
+//                << EVT(VA.getLocVT()).getEVTString()
+//                << "\n";
+//        }
+//        // Create the frame index object for this incoming parameter...
+//        int FI = MFI.CreateFixedObject(ObjSize, VA.getLocMemOffset(), true);
+//
+//        // Create the SelectionDAG nodes corresponding to a load
+//        //from this parameter
+//        SDValue FIN = DAG.getFrameIndex(FI, MVT::i16);
+//        InVal = DAG.getLoad(
+//            VA.getLocVT(), dl, Chain, FIN,
+//            MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), FI));
+//      }
+//
+//      InVals.push_back(InVal);
+//    }
+//  }
 
   for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
     if (Ins[i].Flags.isSRet()) {
@@ -706,9 +706,11 @@ WDC65816TargetLowering::CanLowerReturn(CallingConv::ID CallConv,
                                      bool IsVarArg,
                                      const SmallVectorImpl<ISD::OutputArg> &Outs,
                                      LLVMContext &Context) const {
-  SmallVector<CCValAssign, 16> RVLocs;
-  CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
-  return CCInfo.CheckReturn(Outs, RetCC_WDC65816);
+  //SmallVector<CCValAssign, 16> RVLocs;
+  //CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
+  //return CCInfo.CheckReturn(Outs, RetCC_WDC65816);
+
+  return false;
 }
 
 SDValue
@@ -1394,200 +1396,204 @@ bool WDC65816TargetLowering::isZExtFree(SDValue Val, EVT VT2) const {
 MachineBasicBlock *
 WDC65816TargetLowering::EmitShiftInstr(MachineInstr &MI,
                                      MachineBasicBlock *BB) const {
-  MachineFunction *F = BB->getParent();
-  MachineRegisterInfo &RI = F->getRegInfo();
-  DebugLoc dl = MI.getDebugLoc();
-  const TargetInstrInfo &TII = *F->getSubtarget().getInstrInfo();
+  //MachineFunction *F = BB->getParent();
+  //MachineRegisterInfo &RI = F->getRegInfo();
+  //DebugLoc dl = MI.getDebugLoc();
+  //const TargetInstrInfo &TII = *F->getSubtarget().getInstrInfo();
 
-  unsigned Opc;
-  bool ClearCarry = false;
-  const TargetRegisterClass * RC;
-  switch (MI.getOpcode()) {
-  default: llvm_unreachable("Invalid shift opcode!");
-  case WDC65816::Shl8:
-    Opc = WDC65816::ADD8rr;
-    RC = &WDC65816::GR8RegClass;
-    break;
-  case WDC65816::Shl16:
-    Opc = WDC65816::ADD16rr;
-    RC = &WDC65816::GR16RegClass;
-    break;
-  case WDC65816::Sra8:
-    Opc = WDC65816::RRA8r;
-    RC = &WDC65816::GR8RegClass;
-    break;
-  case WDC65816::Sra16:
-    Opc = WDC65816::RRA16r;
-    RC = &WDC65816::GR16RegClass;
-    break;
-  case WDC65816::Srl8:
-    ClearCarry = true;
-    Opc = WDC65816::RRC8r;
-    RC = &WDC65816::GR8RegClass;
-    break;
-  case WDC65816::Srl16:
-    ClearCarry = true;
-    Opc = WDC65816::RRC16r;
-    RC = &WDC65816::GR16RegClass;
-    break;
-  case WDC65816::Rrcl8:
-  case WDC65816::Rrcl16: {
-    BuildMI(*BB, MI, dl, TII.get(WDC65816::BIC16rc), WDC65816::SR)
-      .addReg(WDC65816::SR).addImm(1);
-    unsigned SrcReg = MI.getOperand(1).getReg();
-    unsigned DstReg = MI.getOperand(0).getReg();
-    unsigned RrcOpc = MI.getOpcode() == WDC65816::Rrcl16
-                    ? WDC65816::RRC16r : WDC65816::RRC8r;
-    BuildMI(*BB, MI, dl, TII.get(RrcOpc), DstReg)
-      .addReg(SrcReg);
-    MI.eraseFromParent(); // The pseudo instruction is gone now.
-    return BB;
-  }
-  }
+  //unsigned Opc;
+  //bool ClearCarry = false;
+  //const TargetRegisterClass * RC;
+  //switch (MI.getOpcode()) {
+  //default: llvm_unreachable("Invalid shift opcode!");
+  //case WDC65816::Shl8:
+  //  Opc = WDC65816::ADD8rr;
+  //  RC = &WDC65816::GR8RegClass;
+  //  break;
+  //case WDC65816::Shl16:
+  //  Opc = WDC65816::ADD16rr;
+  //  RC = &WDC65816::GR16RegClass;
+  //  break;
+  //case WDC65816::Sra8:
+  //  Opc = WDC65816::RRA8r;
+  //  RC = &WDC65816::GR8RegClass;
+  //  break;
+  //case WDC65816::Sra16:
+  //  Opc = WDC65816::RRA16r;
+  //  RC = &WDC65816::GR16RegClass;
+  //  break;
+  //case WDC65816::Srl8:
+  //  ClearCarry = true;
+  //  Opc = WDC65816::RRC8r;
+  //  RC = &WDC65816::GR8RegClass;
+  //  break;
+  //case WDC65816::Srl16:
+  //  ClearCarry = true;
+  //  Opc = WDC65816::RRC16r;
+  //  RC = &WDC65816::GR16RegClass;
+  //  break;
+  //case WDC65816::Rrcl8:
+  //case WDC65816::Rrcl16: {
+  //  BuildMI(*BB, MI, dl, TII.get(WDC65816::BIC16rc), WDC65816::SR)
+  //    .addReg(WDC65816::SR).addImm(1);
+  //  unsigned SrcReg = MI.getOperand(1).getReg();
+  //  unsigned DstReg = MI.getOperand(0).getReg();
+  //  unsigned RrcOpc = MI.getOpcode() == WDC65816::Rrcl16
+  //                  ? WDC65816::RRC16r : WDC65816::RRC8r;
+  //  BuildMI(*BB, MI, dl, TII.get(RrcOpc), DstReg)
+  //    .addReg(SrcReg);
+  //  MI.eraseFromParent(); // The pseudo instruction is gone now.
+  //  return BB;
+  //}
+  //}
 
-  const BasicBlock *LLVM_BB = BB->getBasicBlock();
-  MachineFunction::iterator I = ++BB->getIterator();
+  //const BasicBlock *LLVM_BB = BB->getBasicBlock();
+  //MachineFunction::iterator I = ++BB->getIterator();
 
-  // Create loop block
-  MachineBasicBlock *LoopBB = F->CreateMachineBasicBlock(LLVM_BB);
-  MachineBasicBlock *RemBB  = F->CreateMachineBasicBlock(LLVM_BB);
+  //// Create loop block
+  //MachineBasicBlock *LoopBB = F->CreateMachineBasicBlock(LLVM_BB);
+  //MachineBasicBlock *RemBB  = F->CreateMachineBasicBlock(LLVM_BB);
 
-  F->insert(I, LoopBB);
-  F->insert(I, RemBB);
+  //F->insert(I, LoopBB);
+  //F->insert(I, RemBB);
 
-  // Update machine-CFG edges by transferring all successors of the current
-  // block to the block containing instructions after shift.
-  RemBB->splice(RemBB->begin(), BB, std::next(MachineBasicBlock::iterator(MI)),
-                BB->end());
-  RemBB->transferSuccessorsAndUpdatePHIs(BB);
+  //// Update machine-CFG edges by transferring all successors of the current
+  //// block to the block containing instructions after shift.
+  //RemBB->splice(RemBB->begin(), BB, std::next(MachineBasicBlock::iterator(MI)),
+  //              BB->end());
+  //RemBB->transferSuccessorsAndUpdatePHIs(BB);
 
-  // Add edges BB => LoopBB => RemBB, BB => RemBB, LoopBB => LoopBB
-  BB->addSuccessor(LoopBB);
-  BB->addSuccessor(RemBB);
-  LoopBB->addSuccessor(RemBB);
-  LoopBB->addSuccessor(LoopBB);
+  //// Add edges BB => LoopBB => RemBB, BB => RemBB, LoopBB => LoopBB
+  //BB->addSuccessor(LoopBB);
+  //BB->addSuccessor(RemBB);
+  //LoopBB->addSuccessor(RemBB);
+  //LoopBB->addSuccessor(LoopBB);
 
-  unsigned ShiftAmtReg = RI.createVirtualRegister(&WDC65816::GR8RegClass);
-  unsigned ShiftAmtReg2 = RI.createVirtualRegister(&WDC65816::GR8RegClass);
-  unsigned ShiftReg = RI.createVirtualRegister(RC);
-  unsigned ShiftReg2 = RI.createVirtualRegister(RC);
-  unsigned ShiftAmtSrcReg = MI.getOperand(2).getReg();
-  unsigned SrcReg = MI.getOperand(1).getReg();
-  unsigned DstReg = MI.getOperand(0).getReg();
+  //unsigned ShiftAmtReg = RI.createVirtualRegister(&WDC65816::GR8RegClass);
+  //unsigned ShiftAmtReg2 = RI.createVirtualRegister(&WDC65816::GR8RegClass);
+  //unsigned ShiftReg = RI.createVirtualRegister(RC);
+  //unsigned ShiftReg2 = RI.createVirtualRegister(RC);
+  //unsigned ShiftAmtSrcReg = MI.getOperand(2).getReg();
+  //unsigned SrcReg = MI.getOperand(1).getReg();
+  //unsigned DstReg = MI.getOperand(0).getReg();
 
-  // BB:
-  // cmp 0, N
-  // je RemBB
-  BuildMI(BB, dl, TII.get(WDC65816::CMP8ri))
-    .addReg(ShiftAmtSrcReg).addImm(0);
-  BuildMI(BB, dl, TII.get(WDC65816::JCC))
-    .addMBB(RemBB)
-    .addImm(WDC65816CC::COND_E);
+  //// BB:
+  //// cmp 0, N
+  //// je RemBB
+  //BuildMI(BB, dl, TII.get(WDC65816::CMP8ri))
+  //  .addReg(ShiftAmtSrcReg).addImm(0);
+  //BuildMI(BB, dl, TII.get(WDC65816::JCC))
+  //  .addMBB(RemBB)
+  //  .addImm(WDC65816CC::COND_E);
 
-  // LoopBB:
-  // ShiftReg = phi [%SrcReg, BB], [%ShiftReg2, LoopBB]
-  // ShiftAmt = phi [%N, BB],      [%ShiftAmt2, LoopBB]
-  // ShiftReg2 = shift ShiftReg
-  // ShiftAmt2 = ShiftAmt - 1;
-  BuildMI(LoopBB, dl, TII.get(WDC65816::PHI), ShiftReg)
-    .addReg(SrcReg).addMBB(BB)
-    .addReg(ShiftReg2).addMBB(LoopBB);
-  BuildMI(LoopBB, dl, TII.get(WDC65816::PHI), ShiftAmtReg)
-    .addReg(ShiftAmtSrcReg).addMBB(BB)
-    .addReg(ShiftAmtReg2).addMBB(LoopBB);
-  if (ClearCarry)
-    BuildMI(LoopBB, dl, TII.get(WDC65816::BIC16rc), WDC65816::SR)
-      .addReg(WDC65816::SR).addImm(1);
-  if (Opc == WDC65816::ADD8rr || Opc == WDC65816::ADD16rr)
-    BuildMI(LoopBB, dl, TII.get(Opc), ShiftReg2)
-      .addReg(ShiftReg)
-      .addReg(ShiftReg);
-  else
-    BuildMI(LoopBB, dl, TII.get(Opc), ShiftReg2)
-      .addReg(ShiftReg);
-  BuildMI(LoopBB, dl, TII.get(WDC65816::SUB8ri), ShiftAmtReg2)
-    .addReg(ShiftAmtReg).addImm(1);
-  BuildMI(LoopBB, dl, TII.get(WDC65816::JCC))
-    .addMBB(LoopBB)
-    .addImm(WDC65816CC::COND_NE);
+  //// LoopBB:
+  //// ShiftReg = phi [%SrcReg, BB], [%ShiftReg2, LoopBB]
+  //// ShiftAmt = phi [%N, BB],      [%ShiftAmt2, LoopBB]
+  //// ShiftReg2 = shift ShiftReg
+  //// ShiftAmt2 = ShiftAmt - 1;
+  //BuildMI(LoopBB, dl, TII.get(WDC65816::PHI), ShiftReg)
+  //  .addReg(SrcReg).addMBB(BB)
+  //  .addReg(ShiftReg2).addMBB(LoopBB);
+  //BuildMI(LoopBB, dl, TII.get(WDC65816::PHI), ShiftAmtReg)
+  //  .addReg(ShiftAmtSrcReg).addMBB(BB)
+  //  .addReg(ShiftAmtReg2).addMBB(LoopBB);
+  //if (ClearCarry)
+  //  BuildMI(LoopBB, dl, TII.get(WDC65816::BIC16rc), WDC65816::SR)
+  //    .addReg(WDC65816::SR).addImm(1);
+  //if (Opc == WDC65816::ADD8rr || Opc == WDC65816::ADD16rr)
+  //  BuildMI(LoopBB, dl, TII.get(Opc), ShiftReg2)
+  //    .addReg(ShiftReg)
+  //    .addReg(ShiftReg);
+  //else
+  //  BuildMI(LoopBB, dl, TII.get(Opc), ShiftReg2)
+  //    .addReg(ShiftReg);
+  //BuildMI(LoopBB, dl, TII.get(WDC65816::SUB8ri), ShiftAmtReg2)
+  //  .addReg(ShiftAmtReg).addImm(1);
+  //BuildMI(LoopBB, dl, TII.get(WDC65816::JCC))
+  //  .addMBB(LoopBB)
+  //  .addImm(WDC65816CC::COND_NE);
 
-  // RemBB:
-  // DestReg = phi [%SrcReg, BB], [%ShiftReg, LoopBB]
-  BuildMI(*RemBB, RemBB->begin(), dl, TII.get(WDC65816::PHI), DstReg)
-    .addReg(SrcReg).addMBB(BB)
-    .addReg(ShiftReg2).addMBB(LoopBB);
+  //// RemBB:
+  //// DestReg = phi [%SrcReg, BB], [%ShiftReg, LoopBB]
+  //BuildMI(*RemBB, RemBB->begin(), dl, TII.get(WDC65816::PHI), DstReg)
+  //  .addReg(SrcReg).addMBB(BB)
+  //  .addReg(ShiftReg2).addMBB(LoopBB);
 
-  MI.eraseFromParent(); // The pseudo instruction is gone now.
-  return RemBB;
+  //MI.eraseFromParent(); // The pseudo instruction is gone now.
+  //return RemBB;
+
+  return nullptr;
 }
 
 MachineBasicBlock *
 WDC65816TargetLowering::EmitInstrWithCustomInserter(MachineInstr &MI,
                                                   MachineBasicBlock *BB) const {
-  unsigned Opc = MI.getOpcode();
+  //unsigned Opc = MI.getOpcode();
 
-  if (Opc == WDC65816::Shl8  || Opc == WDC65816::Shl16 ||
-      Opc == WDC65816::Sra8  || Opc == WDC65816::Sra16 ||
-      Opc == WDC65816::Srl8  || Opc == WDC65816::Srl16 ||
-      Opc == WDC65816::Rrcl8 || Opc == WDC65816::Rrcl16)
-    return EmitShiftInstr(MI, BB);
+  //if (Opc == WDC65816::Shl8  || Opc == WDC65816::Shl16 ||
+  //    Opc == WDC65816::Sra8  || Opc == WDC65816::Sra16 ||
+  //    Opc == WDC65816::Srl8  || Opc == WDC65816::Srl16 ||
+  //    Opc == WDC65816::Rrcl8 || Opc == WDC65816::Rrcl16)
+  //  return EmitShiftInstr(MI, BB);
 
-  const TargetInstrInfo &TII = *BB->getParent()->getSubtarget().getInstrInfo();
-  DebugLoc dl = MI.getDebugLoc();
+  //const TargetInstrInfo &TII = *BB->getParent()->getSubtarget().getInstrInfo();
+  //DebugLoc dl = MI.getDebugLoc();
 
-  assert((Opc == WDC65816::Select16 || Opc == WDC65816::Select8) &&
-         "Unexpected instr type to insert");
+  //assert((Opc == WDC65816::Select16 || Opc == WDC65816::Select8) &&
+  //       "Unexpected instr type to insert");
 
-  // To "insert" a SELECT instruction, we actually have to insert the diamond
-  // control-flow pattern.  The incoming instruction knows the destination vreg
-  // to set, the condition code register to branch on, the true/false values to
-  // select between, and a branch opcode to use.
-  const BasicBlock *LLVM_BB = BB->getBasicBlock();
-  MachineFunction::iterator I = ++BB->getIterator();
+  //// To "insert" a SELECT instruction, we actually have to insert the diamond
+  //// control-flow pattern.  The incoming instruction knows the destination vreg
+  //// to set, the condition code register to branch on, the true/false values to
+  //// select between, and a branch opcode to use.
+  //const BasicBlock *LLVM_BB = BB->getBasicBlock();
+  //MachineFunction::iterator I = ++BB->getIterator();
 
-  //  thisMBB:
-  //  ...
-  //   TrueVal = ...
-  //   cmpTY ccX, r1, r2
-  //   jCC copy1MBB
-  //   fallthrough --> copy0MBB
-  MachineBasicBlock *thisMBB = BB;
-  MachineFunction *F = BB->getParent();
-  MachineBasicBlock *copy0MBB = F->CreateMachineBasicBlock(LLVM_BB);
-  MachineBasicBlock *copy1MBB = F->CreateMachineBasicBlock(LLVM_BB);
-  F->insert(I, copy0MBB);
-  F->insert(I, copy1MBB);
-  // Update machine-CFG edges by transferring all successors of the current
-  // block to the new block which will contain the Phi node for the select.
-  copy1MBB->splice(copy1MBB->begin(), BB,
-                   std::next(MachineBasicBlock::iterator(MI)), BB->end());
-  copy1MBB->transferSuccessorsAndUpdatePHIs(BB);
-  // Next, add the true and fallthrough blocks as its successors.
-  BB->addSuccessor(copy0MBB);
-  BB->addSuccessor(copy1MBB);
+  ////  thisMBB:
+  ////  ...
+  ////   TrueVal = ...
+  ////   cmpTY ccX, r1, r2
+  ////   jCC copy1MBB
+  ////   fallthrough --> copy0MBB
+  //MachineBasicBlock *thisMBB = BB;
+  //MachineFunction *F = BB->getParent();
+  //MachineBasicBlock *copy0MBB = F->CreateMachineBasicBlock(LLVM_BB);
+  //MachineBasicBlock *copy1MBB = F->CreateMachineBasicBlock(LLVM_BB);
+  //F->insert(I, copy0MBB);
+  //F->insert(I, copy1MBB);
+  //// Update machine-CFG edges by transferring all successors of the current
+  //// block to the new block which will contain the Phi node for the select.
+  //copy1MBB->splice(copy1MBB->begin(), BB,
+  //                 std::next(MachineBasicBlock::iterator(MI)), BB->end());
+  //copy1MBB->transferSuccessorsAndUpdatePHIs(BB);
+  //// Next, add the true and fallthrough blocks as its successors.
+  //BB->addSuccessor(copy0MBB);
+  //BB->addSuccessor(copy1MBB);
 
-  BuildMI(BB, dl, TII.get(WDC65816::JCC))
-      .addMBB(copy1MBB)
-      .addImm(MI.getOperand(3).getImm());
+  //BuildMI(BB, dl, TII.get(WDC65816::JCC))
+  //    .addMBB(copy1MBB)
+  //    .addImm(MI.getOperand(3).getImm());
 
-  //  copy0MBB:
-  //   %FalseValue = ...
-  //   # fallthrough to copy1MBB
-  BB = copy0MBB;
+  ////  copy0MBB:
+  ////   %FalseValue = ...
+  ////   # fallthrough to copy1MBB
+  //BB = copy0MBB;
 
-  // Update machine-CFG edges
-  BB->addSuccessor(copy1MBB);
+  //// Update machine-CFG edges
+  //BB->addSuccessor(copy1MBB);
 
-  //  copy1MBB:
-  //   %Result = phi [ %FalseValue, copy0MBB ], [ %TrueValue, thisMBB ]
-  //  ...
-  BB = copy1MBB;
-  BuildMI(*BB, BB->begin(), dl, TII.get(WDC65816::PHI), MI.getOperand(0).getReg())
-      .addReg(MI.getOperand(2).getReg())
-      .addMBB(copy0MBB)
-      .addReg(MI.getOperand(1).getReg())
-      .addMBB(thisMBB);
+  ////  copy1MBB:
+  ////   %Result = phi [ %FalseValue, copy0MBB ], [ %TrueValue, thisMBB ]
+  ////  ...
+  //BB = copy1MBB;
+  //BuildMI(*BB, BB->begin(), dl, TII.get(WDC65816::PHI), MI.getOperand(0).getReg())
+  //    .addReg(MI.getOperand(2).getReg())
+  //    .addMBB(copy0MBB)
+  //    .addReg(MI.getOperand(1).getReg())
+  //    .addMBB(thisMBB);
 
-  MI.eraseFromParent(); // The pseudo instruction is gone now.
-  return BB;
+  //MI.eraseFromParent(); // The pseudo instruction is gone now.
+  //return BB;
+
+  return nullptr;
 }
