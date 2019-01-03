@@ -34,7 +34,7 @@ static Reloc::Model getEffectiveRelocModel(Optional<Reloc::Model> RM) {
 
 static std::string computeDataLayout(const Triple &TT, StringRef CPU,
                                      const TargetOptions &Options) {
-  return "e-m:e-p:16:16-i32:16-i64:16-f32:16-f64:16-a:8-n8:16-S16";
+  return "e-p:24:8-i16:8-a:8-n8:16-S8";
 }
 
 WDC65816TargetMachine::WDC65816TargetMachine(const Target &T, const Triple &TT,
