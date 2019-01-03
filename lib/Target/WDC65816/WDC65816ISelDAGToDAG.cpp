@@ -252,6 +252,7 @@ bool WDC65816DAGToDAGISel::SelectAddr(SDValue N,
   if (MatchAddress(N, AM))
     return false;
 
+  // WDC65816-TODO 
   //if (AM.BaseType == WDC65816ISelAddressMode::RegBase)
   //  if (!AM.Base.Reg.getNode())
   //    AM.Base.Reg = CurDAG->getRegister(WDC65816::SR, MVT::i16);
@@ -333,6 +334,7 @@ bool WDC65816DAGToDAGISel::tryIndexedLoad(SDNode *N) {
 
   MVT VT = LD->getMemoryVT().getSimpleVT();
 
+  // WDC65816-TODO 
   //unsigned Opcode = 0;
   //switch (VT.SimpleTy) {
   //case MVT::i8:
@@ -388,6 +390,7 @@ void WDC65816DAGToDAGISel::Select(SDNode *Node) {
     return;
   }
 
+  // WDC65816-TODO 
   //// Few custom selection stuff.
   //switch (Node->getOpcode()) {
   //default: break;

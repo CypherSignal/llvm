@@ -37,6 +37,7 @@ WDC65816RegisterInfo::WDC65816RegisterInfo()
 
 const MCPhysReg*
 WDC65816RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
+  // WDC65816-TODO 
   //const WDC65816FrameLowering *TFI = getFrameLowering(*MF);
   //const Function* F = &MF->getFunction();
   //static const MCPhysReg CalleeSavedRegs[] = {
@@ -74,6 +75,7 @@ WDC65816RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
 
 BitVector WDC65816RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
+  // WDC65816-TODO 
   //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
 
   //// Mark 4 special registers with subregisters as reserved.
@@ -98,6 +100,7 @@ BitVector WDC65816RegisterInfo::getReservedRegs(const MachineFunction &MF) const
 const TargetRegisterClass *
 WDC65816RegisterInfo::getPointerRegClass(const MachineFunction &MF, unsigned Kind)
                                                                          const {
+  // WDC65816-TODO 
   //return &WDC65816::GR16RegClass;
   return nullptr;
 }
@@ -106,6 +109,7 @@ void
 WDC65816RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
                                         int SPAdj, unsigned FIOperandNum,
                                         RegScavenger *RS) const {
+  // WDC65816-TODO 
   //assert(SPAdj == 0 && "Unexpected");
 
   //MachineInstr &MI = *II;
@@ -158,6 +162,7 @@ WDC65816RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II,
 }
 
 unsigned WDC65816RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
+  // WDC65816-TODO 
   //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
   //return TFI->hasFP(MF) ? WDC65816::FP : WDC65816::SP;
   return WDC65816::SP;

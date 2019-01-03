@@ -42,6 +42,7 @@ WDC65816TargetLowering::WDC65816TargetLowering(const TargetMachine &TM,
                                            const WDC65816Subtarget &STI)
     : TargetLowering(TM) {
 
+  // WDC65816-TODO 
   //// Set up the register classes.
   //addRegisterClass(MVT::i8,  &WDC65816::GR8RegClass);
   //addRegisterClass(MVT::i16, &WDC65816::GR16RegClass);
@@ -374,6 +375,7 @@ WDC65816TargetLowering::getConstraintType(StringRef Constraint) const {
 std::pair<unsigned, const TargetRegisterClass *>
 WDC65816TargetLowering::getRegForInlineAsmConstraint(
     const TargetRegisterInfo *TRI, StringRef Constraint, MVT VT) const {
+  // WDC65816-TODO 
   //if (Constraint.size() == 1) {
   //  // GCC Constraint Letters
   //  switch (Constraint[0]) {
@@ -420,11 +422,13 @@ static void ParseFunctionArgs(const SmallVectorImpl<ArgT> &Args,
 
 static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::OutputArg> &Outs) {
+  // WDC65816-TODO 
   //State.AnalyzeCallOperands(Outs, CC_WDC65816_AssignStack);
 }
 
 static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::InputArg> &Ins) {
+  // WDC65816-TODO 
   //State.AnalyzeFormalArguments(Ins, CC_WDC65816_AssignStack);
 }
 
@@ -436,6 +440,7 @@ template<typename ArgT>
 static void AnalyzeArguments(CCState &State,
                              SmallVectorImpl<CCValAssign> &ArgLocs,
                              const SmallVectorImpl<ArgT> &Args) {
+  // WDC65816-TODO 
   //static const MCPhysReg CRegList[] = {
   //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
   //};
@@ -529,11 +534,13 @@ static void AnalyzeArguments(CCState &State,
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::InputArg> &Ins) {
+  // WDC65816-TODO 
   //State.AnalyzeCallResult(Ins, RetCC_WDC65816);
 }
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::OutputArg> &Outs) {
+  // WDC65816-TODO 
   //State.AnalyzeReturn(Outs, RetCC_WDC65816);
 }
 
@@ -616,6 +623,7 @@ SDValue WDC65816TargetLowering::LowerCCCArguments(
     FuncInfo->setVarArgsFrameIndex(MFI.CreateFixedObject(1, Offset, true));
   }
 
+  // WDC65816-TODO 
 //  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
 //    CCValAssign &VA = ArgLocs[i];
 //    if (VA.isRegLoc()) {
@@ -706,6 +714,7 @@ WDC65816TargetLowering::CanLowerReturn(CallingConv::ID CallConv,
                                      bool IsVarArg,
                                      const SmallVectorImpl<ISD::OutputArg> &Outs,
                                      LLVMContext &Context) const {
+  // WDC65816-TODO 
   //SmallVector<CCValAssign, 16> RVLocs;
   //CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
   //return CCInfo.CheckReturn(Outs, RetCC_WDC65816);
@@ -753,6 +762,7 @@ WDC65816TargetLowering::LowerReturn(SDValue Chain, CallingConv::ID CallConv,
     RetOps.push_back(DAG.getRegister(VA.getLocReg(), VA.getLocVT()));
   }
 
+  // WDC65816-TODO 
   //if (MF.getFunction().hasStructRetAttr()) {
   //  WDC65816MachineFunctionInfo *FuncInfo = MF.getInfo<WDC65816MachineFunctionInfo>();
   //  unsigned Reg = FuncInfo->getSRetReturnReg();
@@ -1397,6 +1407,7 @@ bool WDC65816TargetLowering::isZExtFree(SDValue Val, EVT VT2) const {
 MachineBasicBlock *
 WDC65816TargetLowering::EmitShiftInstr(MachineInstr &MI,
                                      MachineBasicBlock *BB) const {
+  // WDC65816-TODO 
   //MachineFunction *F = BB->getParent();
   //MachineRegisterInfo &RI = F->getRegInfo();
   //DebugLoc dl = MI.getDebugLoc();
@@ -1529,6 +1540,7 @@ WDC65816TargetLowering::EmitShiftInstr(MachineInstr &MI,
 MachineBasicBlock *
 WDC65816TargetLowering::EmitInstrWithCustomInserter(MachineInstr &MI,
                                                   MachineBasicBlock *BB) const {
+  // WDC65816-TODO 
   //unsigned Opc = MI.getOpcode();
 
   //if (Opc == WDC65816::Shl8  || Opc == WDC65816::Shl16 ||
