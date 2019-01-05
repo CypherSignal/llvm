@@ -32,8 +32,7 @@ void WDC65816InstrInfo::anchor() {}
 
 WDC65816InstrInfo::WDC65816InstrInfo(WDC65816Subtarget &STI)
   // WDC65816-TODO - wdc65816InstrInfo ctor (ADJCALLSTACKDOWN/UP)
-  : WDC65816InstrInfo(0,0),
-//: WDC65816GenInstrInfo(WDC65816::ADJCALLSTACKDOWN, WDC65816::ADJCALLSTACKUP),
+  : WDC65816GenInstrInfo(WDC65816::ADC16imm, WDC65816::ADC16imm),
     RI() {}
 
 void WDC65816InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
@@ -310,7 +309,7 @@ unsigned WDC65816InstrInfo::insertBranch(MachineBasicBlock &MBB,
 unsigned WDC65816InstrInfo::getInstSizeInBytes(const MachineInstr &MI) const {
   const MCInstrDesc &Desc = MI.getDesc();
 
-  // WDC65816-TODO 
+  // WDC65816-TODO - getInstSizeInBytes
   //switch (Desc.getOpcode()) {
   //case TargetOpcode::CFI_INSTRUCTION:
   //case TargetOpcode::EH_LABEL:

@@ -37,72 +37,26 @@ WDC65816RegisterInfo::WDC65816RegisterInfo()
 
 const MCPhysReg*
 WDC65816RegisterInfo::getCalleeSavedRegs(const MachineFunction *MF) const {
-  // WDC65816-TODO - getCalleeSavedRegs (may be nullptr problem)
-  //const WDC65816FrameLowering *TFI = getFrameLowering(*MF);
-  //const Function* F = &MF->getFunction();
-  //static const MCPhysReg CalleeSavedRegs[] = {
-  //  WDC65816::FP, WDC65816::R5, WDC65816::R6, WDC65816::R7,
-  //  WDC65816::R8, WDC65816::R9, WDC65816::R10,
-  //  0
-  //};
-  //static const MCPhysReg CalleeSavedRegsFP[] = {
-  //  WDC65816::R5, WDC65816::R6, WDC65816::R7,
-  //  WDC65816::R8, WDC65816::R9, WDC65816::R10,
-  //  0
-  //};
-  //static const MCPhysReg CalleeSavedRegsIntr[] = {
-  //  WDC65816::FP,  WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
-  //  WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
-  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
-  //  0
-  //};
-  //static const MCPhysReg CalleeSavedRegsIntrFP[] = {
-  //  WDC65816::R5,  WDC65816::R6,  WDC65816::R7,
-  //  WDC65816::R8,  WDC65816::R9,  WDC65816::R10, WDC65816::R11,
-  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15,
-  //  0
-  //};
-
-  //if (TFI->hasFP(*MF))
-  //  return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
-  //          CalleeSavedRegsIntrFP : CalleeSavedRegsFP);
-  //else
-  //  return (F->getCallingConv() == CallingConv::WDC65816_INTR ?
-  //          CalleeSavedRegsIntr : CalleeSavedRegs);
-  return nullptr;
-
+  // WDC65816-TODO - getCalleeSavedRegs - registers are wrong
+  static const MCPhysReg CalleeSavedRegs[] = {
+    WDC65816::C, WDC65816::S, WDC65816::X, WDC65816::Y,
+    WDC65816::DBR, WDC65816::D, WDC65816::K, WDC65816::P,
+    0
+  };
+  return CalleeSavedRegs;
 }
 
 BitVector WDC65816RegisterInfo::getReservedRegs(const MachineFunction &MF) const {
   BitVector Reserved(getNumRegs());
-  // WDC65816-TODO - getReservedRegs
-  //const WDC65816FrameLowering *TFI = getFrameLowering(MF);
-
-  //// Mark 4 special registers with subregisters as reserved.
-  //Reserved.set(WDC65816::PCB);
-  //Reserved.set(WDC65816::SPB);
-  //Reserved.set(WDC65816::SRB);
-  //Reserved.set(WDC65816::CGB);
-  //Reserved.set(WDC65816::PC);
-  //Reserved.set(WDC65816::SP);
-  //Reserved.set(WDC65816::SR);
-  //Reserved.set(WDC65816::CG);
-
-  //// Mark frame pointer as reserved if needed.
-  //if (TFI->hasFP(MF)) {
-  //  Reserved.set(WDC65816::FPB);
-  //  Reserved.set(WDC65816::FP);
-  //}
-
+  // Mark 4 special registers with subregisters as reserved.
+  Reserved.set(WDC65816::PC);
   return Reserved;
 }
 
 const TargetRegisterClass *
 WDC65816RegisterInfo::getPointerRegClass(const MachineFunction &MF, unsigned Kind)
                                                                          const {
-  // WDC65816-TODO - getPointerRegClass (may be nullptr problem)
-  //return &WDC65816::GR16RegClass;
-  return nullptr;
+  return &WDC65816::GACC16RegClass;
 }
 
 void

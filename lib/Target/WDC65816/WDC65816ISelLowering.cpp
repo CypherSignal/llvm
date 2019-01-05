@@ -43,17 +43,17 @@ WDC65816TargetLowering::WDC65816TargetLowering(const TargetMachine &TM,
     : TargetLowering(TM) {
 
   // WDC65816-TODO - set uip targetLowering
-  //// Set up the register classes.
-  //addRegisterClass(MVT::i8,  &WDC65816::GR8RegClass);
-  //addRegisterClass(MVT::i16, &WDC65816::GR16RegClass);
+  // Set up the register classes.
+  addRegisterClass(MVT::i8,  &WDC65816::GACC8RegClass);
+  addRegisterClass(MVT::i16, &WDC65816::GACC16RegClass);
 
   //// Compute derived properties from the register classes
-  //computeRegisterProperties(STI.getRegisterInfo());
+  computeRegisterProperties(STI.getRegisterInfo());
 
   //// Provide all sorts of operation actions
-  //setStackPointerRegisterToSaveRestore(WDC65816::SP);
-  //setBooleanContents(ZeroOrOneBooleanContent);
-  //setBooleanVectorContents(ZeroOrOneBooleanContent); // FIXME: Is this correct?
+  setStackPointerRegisterToSaveRestore(WDC65816::S);
+  setBooleanContents(ZeroOrOneBooleanContent);
+  setBooleanVectorContents(ZeroOrOneBooleanContent); // FIXME: Is this correct?
 
   //// We have post-incremented loads / stores.
   //setIndexedLoadAction(ISD::POST_INC, MVT::i8, Legal);
