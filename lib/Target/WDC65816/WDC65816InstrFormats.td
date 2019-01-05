@@ -30,21 +30,42 @@
 // def DstMem      : DestMode<1>;   // m
 
 // // Generic WDC65816 Format
-class WDC65816Inst<dag outs, dag ins, int size, string asmstr> : Instruction {
-  field bits<48> Inst;
-  field bits<48> SoftFail = 0;
-
+class WDC65816Inst<int size, string asmstr, list<dag> Pattern> : Instruction {
   let Namespace = "WDC65816";
-
-  dag OutOperandList = outs;
-  dag InOperandList  = ins;
 
   let AsmString = asmstr;
   let Size = size;
+  field bits<32> Inst;
+
+
 }
 
-def DummyInstr : WDC65816Inst<(outs), (ins), 1, "clc">;
+// WDC65816-TODO:
+// need to set up an array of formats for each kind of addressing
+// variant of each format is:
+//    asm opcode string
+//    dag node for the core operation
+// aside from that, opcode 
 
+def ADC16imm : Instruction {
+  let Namespace = "WDC65816";
+
+  let OutOperandList = (outs GACC16:$accd);
+  let InOperandList = (ins GACC16:$accs, i16imm:$imm);
+
+  let AsmString = "ADC #$imm";
+
+  let Pattern = [(set GACC16:$accd, (add GACC16:$accs, imm:$imm))];
+
+  let Size = 3;
+
+  field bits<8> opCode = 0x69;
+  field bits<16> immData;
+  field bits<24> Inst = {opCode, immData};
+
+  field bits<48> SoftFail = 0;
+
+}
 // // WDC65816 Double Operand (Format I) Instructions
 // class IForm<bits<4> opcode, DestMode ad, bit bw, SourceMode as, int size,
 //             dag outs, dag ins, string asmstr, list<dag> pattern>
