@@ -31,8 +31,9 @@ using namespace llvm;
 void WDC65816InstrInfo::anchor() {}
 
 WDC65816InstrInfo::WDC65816InstrInfo(WDC65816Subtarget &STI)
-    // WDC65816-TODO 
-  : //WDC65816GenInstrInfo(WDC65816::ADJCALLSTACKDOWN, WDC65816::ADJCALLSTACKUP),
+  // WDC65816-TODO - wdc65816InstrInfo ctor (ADJCALLSTACKDOWN/UP)
+  : WDC65816InstrInfo(0,0),
+//: WDC65816GenInstrInfo(WDC65816::ADJCALLSTACKDOWN, WDC65816::ADJCALLSTACKUP),
     RI() {}
 
 void WDC65816InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
@@ -40,7 +41,7 @@ void WDC65816InstrInfo::storeRegToStackSlot(MachineBasicBlock &MBB,
                                     unsigned SrcReg, bool isKill, int FrameIdx,
                                           const TargetRegisterClass *RC,
                                           const TargetRegisterInfo *TRI) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - storeRegToStackSlot
   // DebugLoc DL;
   // if (MI != MBB.end()) DL = MI->getDebugLoc();
   // MachineFunction &MF = *MBB.getParent();
@@ -68,7 +69,7 @@ void WDC65816InstrInfo::loadRegFromStackSlot(MachineBasicBlock &MBB,
                                            unsigned DestReg, int FrameIdx,
                                            const TargetRegisterClass *RC,
                                            const TargetRegisterInfo *TRI) const{
-  // WDC65816-TODO 
+  // WDC65816-TODO - loadRegFromStackSlot
   // DebugLoc DL;
   // if (MI != MBB.end()) DL = MI->getDebugLoc();
   // MachineFunction &MF = *MBB.getParent();
@@ -95,7 +96,7 @@ void WDC65816InstrInfo::copyPhysReg(MachineBasicBlock &MBB,
                                   MachineBasicBlock::iterator I,
                                   const DebugLoc &DL, unsigned DestReg,
                                   unsigned SrcReg, bool KillSrc) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - copyPhysReg ...wait, is this even possible?
   // unsigned Opc;
   // if (WDC65816::GR16RegClass.contains(DestReg, SrcReg))
   //   Opc = WDC65816::MOV16rr;
@@ -115,7 +116,7 @@ unsigned WDC65816InstrInfo::removeBranch(MachineBasicBlock &MBB,
   MachineBasicBlock::iterator I = MBB.end();
   unsigned Count = 0;
 
-  // WDC65816-TODO 
+  // WDC65816-TODO - removeBranch
   //while (I != MBB.begin()) {
   //  --I;
   //  if (I->isDebugInstr())
@@ -183,7 +184,7 @@ bool WDC65816InstrInfo::analyzeBranch(MachineBasicBlock &MBB,
                                     MachineBasicBlock *&FBB,
                                     SmallVectorImpl<MachineOperand> &Cond,
                                     bool AllowModify) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - analyzeBranch
   //// Start from the bottom of the block and work up, examining the
   //// terminator instructions.
   //MachineBasicBlock::iterator I = MBB.end();
@@ -275,7 +276,7 @@ unsigned WDC65816InstrInfo::insertBranch(MachineBasicBlock &MBB,
                                        ArrayRef<MachineOperand> Cond,
                                        const DebugLoc &DL,
                                        int *BytesAdded) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - insertBranch
   // Shouldn't be a fall through.
   //assert(TBB && "insertBranch must not be told to insert a fallthrough");
   //assert((Cond.size() == 1 || Cond.size() == 0) &&

@@ -79,7 +79,7 @@ void WDC65816InstPrinter::printSrcMemOperand(const MCInst *MI, unsigned OpNo,
   //   mov.w glb(r1), r2
   // Otherwise (!) WDC65816-as will silently miscompile the output :(
 
-  // WDC65816-TODO
+  // WDC65816-TODO - printSrcMemOperand
   //if (Base.getReg() == WDC65816::SR)
   //  O << '&';
 

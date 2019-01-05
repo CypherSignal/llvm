@@ -40,7 +40,7 @@ class WDC65816Inst<int size, string asmstr, list<dag> Pattern> : Instruction {
 
 }
 
-// WDC65816-TODO:
+// WDC65816-TODO - instructions
 // need to set up an array of formats for each kind of addressing
 // variant of each format is:
 //    asm opcode string

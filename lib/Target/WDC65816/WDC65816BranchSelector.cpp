@@ -115,7 +115,7 @@ bool WDC65816BSel::expandBranches(OffsetVector &BlockOffsets) {
   //     b MBB
   //
   bool MadeChange = false;
-  // WDC65816-TODO 
+  // WDC65816-TODO - expandBranches
   //for (auto MBB = MF->begin(), E = MF->end(); MBB != E; ++MBB) {
   //  unsigned MBBStartOffset = 0;
   //  for (auto MI = MBB->begin(), EE = MBB->end(); MI != EE; ++MI) {

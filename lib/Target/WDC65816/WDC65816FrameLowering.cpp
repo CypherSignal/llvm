@@ -40,7 +40,7 @@ bool WDC65816FrameLowering::hasReservedCallFrame(const MachineFunction &MF) cons
 
 void WDC65816FrameLowering::emitPrologue(MachineFunction &MF,
                                        MachineBasicBlock &MBB) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - emit prologue
   //assert(&MF.front() == &MBB && "Shrink-wrapping not yet supported");
   //MachineFrameInfo &MFI = MF.getFrameInfo();
   //WDC65816MachineFunctionInfo *WDC65816FI = MF.getInfo<WDC65816MachineFunctionInfo>();
@@ -107,7 +107,7 @@ void WDC65816FrameLowering::emitPrologue(MachineFunction &MF,
 
 void WDC65816FrameLowering::emitEpilogue(MachineFunction &MF,
                                        MachineBasicBlock &MBB) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - emit epilogue
   //const MachineFrameInfo &MFI = MF.getFrameInfo();
   //WDC65816MachineFunctionInfo *WDC65816FI = MF.getInfo<WDC65816MachineFunctionInfo>();
   //const WDC65816InstrInfo &TII =
@@ -184,9 +184,9 @@ WDC65816FrameLowering::spillCalleeSavedRegisters(MachineBasicBlock &MBB,
                                            MachineBasicBlock::iterator MI,
                                         const std::vector<CalleeSavedInfo> &CSI,
                                         const TargetRegisterInfo *TRI) const {
-  // WDC65816-TODO 
-  //if (CSI.empty())
-  //  return false;
+  // WDC65816-TODO  - spillCalleeSavedRegisters
+  if (CSI.empty())
+    return false;
 
   //DebugLoc DL;
   //if (MI != MBB.end()) DL = MI->getDebugLoc();
@@ -211,9 +211,9 @@ WDC65816FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock &MBB,
                                                  MachineBasicBlock::iterator MI,
                                         std::vector<CalleeSavedInfo> &CSI,
                                         const TargetRegisterInfo *TRI) const {
-  // WDC65816-TODO 
-  //if (CSI.empty())
-  //  return false;
+  // WDC65816-TODO - restoreCalleeSavedRegisters
+  if (CSI.empty())
+    return false;
 
   //DebugLoc DL;
   //if (MI != MBB.end()) DL = MI->getDebugLoc();
@@ -230,7 +230,7 @@ WDC65816FrameLowering::restoreCalleeSavedRegisters(MachineBasicBlock &MBB,
 MachineBasicBlock::iterator WDC65816FrameLowering::eliminateCallFramePseudoInstr(
     MachineFunction &MF, MachineBasicBlock &MBB,
     MachineBasicBlock::iterator I) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - eliminateCallFramePseudoInstr
   //const WDC65816InstrInfo &TII =
   //    *static_cast<const WDC65816InstrInfo *>(MF.getSubtarget().getInstrInfo());
   //unsigned StackAlign = getStackAlignment();
@@ -295,7 +295,7 @@ MachineBasicBlock::iterator WDC65816FrameLowering::eliminateCallFramePseudoInstr
 void
 WDC65816FrameLowering::processFunctionBeforeFrameFinalized(MachineFunction &MF,
                                                          RegScavenger *) const {
-  // WDC65816-TODO 
+  // WDC65816-TODO - processFunctionBeforeFrameFinalized
   //// Create a frame entry for the FP register that must be saved.
   //if (hasFP(MF)) {
   //  int FrameIdx = MF.getFrameInfo().CreateFixedObject(2, -4, true);
