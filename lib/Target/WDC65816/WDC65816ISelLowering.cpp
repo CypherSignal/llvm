@@ -700,12 +700,9 @@ WDC65816TargetLowering::CanLowerReturn(CallingConv::ID CallConv,
                                      bool IsVarArg,
                                      const SmallVectorImpl<ISD::OutputArg> &Outs,
                                      LLVMContext &Context) const {
-  // WDC65816-TODO - canLowerReturn
-  //SmallVector<CCValAssign, 16> RVLocs;
-  //CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
-  //return CCInfo.CheckReturn(Outs, RetCC_WDC65816);
-
-  return false;
+  SmallVector<CCValAssign, 16> RVLocs;
+  CCState CCInfo(CallConv, IsVarArg, MF, RVLocs, Context);
+  return CCInfo.CheckReturn(Outs, RetCC_WDC65816);
 }
 
 SDValue
