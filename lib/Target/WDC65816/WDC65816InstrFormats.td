@@ -75,7 +75,7 @@ def WDC65816callseq_end :
 
 def ADC16imm : 
   WDC65816Inst<(outs GACC16:$accd), (ins GACC16:$accs, i16imm:$imm), 3,
-                "ADC #$imm",  [(set GACC16:$accd, (add GACC16:$accs, imm:$imm))]> {
+                "ADC $imm",  [(set GACC16:$accd, (add GACC16:$accs, imm:$imm))]> {
 
   field bits<8> opCode = 0x69;
   field bits<16> immData;
