@@ -62,20 +62,6 @@ public:
 char WDC65816BSel::ID = 0;
 }
 
-static bool isInRage(int DistanceInBytes) {
-  // According to CC430 Family User's Guide, Section 4.5.1.3, branch
-  // instructions have the signed 10-bit word offset field, so first we need to
-  // convert the distance from bytes to words, then check if it fits in 10-bit
-  // signed integer.
-  const int WordSize = 2;
-
-  assert((DistanceInBytes % WordSize == 0) &&
-         "Branch offset should be word aligned!");
-
-  int Words = DistanceInBytes / WordSize;
-  return isInt<10>(Words);
-}
-
 /// Measure each basic block, fill the BlockOffsets, and return the size of
 /// the function, starting with BB
 unsigned WDC65816BSel::measureFunction(OffsetVector &BlockOffsets,
@@ -235,14 +221,6 @@ bool WDC65816BSel::runOnMachineFunction(MachineFunction &mf) {
   // BlockOffsets - Contains the distance from the beginning of the function to
   // the beginning of each basic block.
   OffsetVector BlockOffsets;
-
-  unsigned FunctionSize = measureFunction(BlockOffsets);
-  // If the entire function is smaller than the displacement of a branch field,
-  // we know we don't need to expand any branches in this
-  // function. This is a common case.
-  if (isInRage(FunctionSize)) {
-    return false;
-  }
 
   // Iteratively expand branches until we reach a fixed point.
   bool MadeChange = false;
