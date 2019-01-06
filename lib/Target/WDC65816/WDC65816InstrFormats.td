@@ -30,15 +30,41 @@
 // def DstMem      : DestMode<1>;   // m
 
 // // Generic WDC65816 Format
-class WDC65816Inst<int size, string asmstr, list<dag> Pattern> : Instruction {
+class WDC65816Inst<dag outs, dag ins, int size, string asmstr, list<dag> pattern> : Instruction {
   let Namespace = "WDC65816";
+  
+  field bits<32> Inst;
+  field bits<48> SoftFail = 0;
+  
+  dag OutOperandList = outs;
+  dag InOperandList = ins;
+  let Pattern = pattern;
 
   let AsmString = asmstr;
   let Size = size;
   field bits<32> Inst;
 
-
 }
+
+// WDC65816 - need to move these custom sdnodes to instrinfo, once instrformats is better understood
+
+def SDT_WDC65816Call         : SDTypeProfile<0, -1, [SDTCisVT<0, iPTR>]>;
+def SDT_WDC65816CallSeqStart : SDCallSeqStart<[SDTCisVT<0, i16>,
+                                             SDTCisVT<1, i16>]>;
+def SDT_WDC65816CallSeqEnd   : SDCallSeqEnd<[SDTCisVT<0, i16>, SDTCisVT<1, i16>]>;
+
+def WDC65816retflag  : SDNode<"WDC65816ISD::RET_FLAG", SDTNone,
+                       [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
+def WDC65816call     : SDNode<"WDC65816ISD::CALL", SDT_WDC65816Call,
+                     [SDNPHasChain, SDNPOutGlue, SDNPOptInGlue, SDNPVariadic]>;
+def WDC65816callseq_start :
+                 SDNode<"ISD::CALLSEQ_START", SDT_WDC65816CallSeqStart,
+                        [SDNPHasChain, SDNPOutGlue]>;
+def WDC65816callseq_end :
+                 SDNode<"ISD::CALLSEQ_END",   SDT_WDC65816CallSeqEnd,
+                        [SDNPHasChain, SDNPOptInGlue, SDNPOutGlue]>;
+
+
 
 // WDC65816-TODO - instructions
 // need to set up an array of formats for each kind of addressing
@@ -47,45 +73,47 @@ class WDC65816Inst<int size, string asmstr, list<dag> Pattern> : Instruction {
 //    dag node for the core operation
 // aside from that, opcode 
 
-def ADC16imm : Instruction {
-  let Namespace = "WDC65816";
-
-  let OutOperandList = (outs GACC16:$accd);
-  let InOperandList = (ins GACC16:$accs, i16imm:$imm);
-
-  let AsmString = "ADC #$imm";
-
-  let Pattern = [(set GACC16:$accd, (add GACC16:$accs, imm:$imm))];
-
-  let Size = 3;
+def ADC16imm : 
+  WDC65816Inst<(outs GACC16:$accd), (ins GACC16:$accs, i16imm:$imm), 3,
+                "ADC #$imm",  [(set GACC16:$accd, (add GACC16:$accs, imm:$imm))]> {
 
   field bits<8> opCode = 0x69;
   field bits<16> immData;
-  field bits<24> Inst = {opCode, immData};
+
+  let Inst{0-7} = opCode;
+  let Inst{8-23} = immData;
 
   field bits<48> SoftFail = 0;
 }
 
-def WDC65816retflag  : SDNode<"WDC65816ISD::RET_FLAG", SDTNone,
-                       [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
-
-
-def RET : Instruction {
-  let Namespace = "WDC65816";
-
-  let OutOperandList = (outs);
-  let InOperandList = (ins);
-
-  let AsmString = "rts";
-
-  let Pattern = [(WDC65816retflag)];
-
-  let Size = 1;
-
+def RET : WDC65816Inst<(outs), (ins), 1, "RTS", [(WDC65816retflag)]> {
   field bits<8> opCode = 0x60;
-  field bits<8> Inst = {opCode};
+  let Inst{0-7} = opCode;
 
   field bits<48> SoftFail = 0;
+
+  let isReturn = 1;
+  let isTerminator = 1;
+  let isBarrier = 1;
+}
+
+// Pseudo instructions
+class Pseudo<dag outs, dag ins, string asmstr, list<dag> pattern>
+  : WDC65816Inst<outs, ins, 0, asmstr, pattern> {
+}
+
+// ADJCALLSTACKDOWN/UP implicitly use/def SP because they may be expanded into
+// a stack adjustment and the codegen must know that they may modify the stack
+// pointer before prolog-epilog rewriting occurs.
+// Pessimistically assume ADJCALLSTACKDOWN / ADJCALLSTACKUP will become
+// sub / add which can clobber SR.
+let isCodeGenOnly = 1, Defs = [S, P], Uses = [S] in {
+def ADJCALLSTACKDOWN : Pseudo<(outs), (ins i16imm:$amt1, i16imm:$amt2),
+                              "#ADJCALLSTACKDOWN $amt1 $amt2",
+                              [(WDC65816callseq_start timm:$amt1, timm:$amt2)]>;
+def ADJCALLSTACKUP   : Pseudo<(outs), (ins i16imm:$amt1, i16imm:$amt2),
+                              "#ADJCALLSTACKUP $amt1 $amt2",
+                              [(WDC65816callseq_end timm:$amt1, timm:$amt2)]>;
 }
 
 // // WDC65816 Double Operand (Format I) Instructions
