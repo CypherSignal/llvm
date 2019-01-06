@@ -424,12 +424,14 @@ static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::OutputArg> &Outs) {
   // WDC65816-TODO - AnalyzeVarArgs
   //State.AnalyzeCallOperands(Outs, CC_WDC65816_AssignStack);
+  llvm_unreachable("varargs unimplemented");
 }
 
 static void AnalyzeVarArgs(CCState &State,
                            const SmallVectorImpl<ISD::InputArg> &Ins) {
   // WDC65816-TODO - AnalyzeVarArgs
   //State.AnalyzeFormalArguments(Ins, CC_WDC65816_AssignStack);
+  llvm_unreachable("varargs unimplemented");
 }
 
 /// Analyze incoming and outgoing function arguments. We need custom C++ code
@@ -440,108 +442,93 @@ template<typename ArgT>
 static void AnalyzeArguments(CCState &State,
                              SmallVectorImpl<CCValAssign> &ArgLocs,
                              const SmallVectorImpl<ArgT> &Args) {
-  // WDC65816-TODO - AnalyzeArguments (IselLowering)
-  //static const MCPhysReg CRegList[] = {
-  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
-  //};
-  //static const unsigned CNbRegs = array_lengthof(CRegList);
-  //static const MCPhysReg BuiltinRegList[] = {
-  //  WDC65816::R8, WDC65816::R9, WDC65816::R10, WDC65816::R11,
-  //  WDC65816::R12, WDC65816::R13, WDC65816::R14, WDC65816::R15
-  //};
-  //static const unsigned BuiltinNbRegs = array_lengthof(BuiltinRegList);
+  static const MCPhysReg BuiltinRegList[] = {
+    WDC65816::C, WDC65816::X, WDC65816::Y,
+  };
+  static const unsigned BuiltinNbRegs = array_lengthof(BuiltinRegList);
 
-  //ArrayRef<MCPhysReg> RegList;
-  //unsigned NbRegs;
+  ArrayRef<MCPhysReg> RegList;
+  unsigned NbRegs;
 
-  //bool Builtin = (State.getCallingConv() == CallingConv::WDC65816_BUILTIN);
-  //if (Builtin) {
-  //  RegList = BuiltinRegList;
-  //  NbRegs = BuiltinNbRegs;
-  //} else {
-  //  RegList = CRegList;
-  //  NbRegs = CNbRegs;
-  //}
+  RegList = BuiltinRegList;
+  NbRegs = BuiltinNbRegs;
 
-  //if (State.isVarArg()) {
-  //  AnalyzeVarArgs(State, Args);
-  //  return;
-  //}
+  if (State.isVarArg()) {
+    AnalyzeVarArgs(State, Args);
+    return;
+  }
 
-  //SmallVector<unsigned, 4> ArgsParts;
-  //ParseFunctionArgs(Args, ArgsParts);
+  SmallVector<unsigned, 4> ArgsParts;
+  ParseFunctionArgs(Args, ArgsParts);
 
-  //if (Builtin) {
-  //  assert(ArgsParts.size() == 2 &&
-  //      "Builtin calling convention requires two arguments");
-  //}
-
-  //unsigned RegsLeft = NbRegs;
+  unsigned RegsLeft = NbRegs;
   //bool UsedStack = false;
-  //unsigned ValNo = 0;
+  unsigned ValNo = 0;
 
-  //for (unsigned i = 0, e = ArgsParts.size(); i != e; i++) {
-  //  MVT ArgVT = Args[ValNo].VT;
-  //  ISD::ArgFlagsTy ArgFlags = Args[ValNo].Flags;
-  //  MVT LocVT = ArgVT;
-  //  CCValAssign::LocInfo LocInfo = CCValAssign::Full;
+  for (unsigned i = 0, e = ArgsParts.size(); i != e && RegsLeft; i++) {
+    MVT ArgVT = Args[ValNo].VT;
+    ISD::ArgFlagsTy ArgFlags = Args[ValNo].Flags;
+    MVT LocVT = ArgVT;
+    CCValAssign::LocInfo LocInfo = CCValAssign::Full;
 
-  //  // Promote i8 to i16
-  //  if (LocVT == MVT::i8) {
-  //    LocVT = MVT::i16;
-  //    if (ArgFlags.isSExt())
-  //        LocInfo = CCValAssign::SExt;
-  //    else if (ArgFlags.isZExt())
-  //        LocInfo = CCValAssign::ZExt;
-  //    else
-  //        LocInfo = CCValAssign::AExt;
-  //  }
+    // Promote i8 to i16
+    if (LocVT == MVT::i8) {
+      LocVT = MVT::i16;
+      if (ArgFlags.isSExt())
+          LocInfo = CCValAssign::SExt;
+      else if (ArgFlags.isZExt())
+          LocInfo = CCValAssign::ZExt;
+      else
+          LocInfo = CCValAssign::AExt;
+    }
 
-  //  // Handle byval arguments
-  //  if (ArgFlags.isByVal()) {
-  //    State.HandleByVal(ValNo++, ArgVT, LocVT, LocInfo, 2, 2, ArgFlags);
-  //    continue;
-  //  }
+    // Handle byval arguments
+    //if (ArgFlags.isByVal()) {
+    //  State.HandleByVal(ValNo++, ArgVT, LocVT, LocInfo, 2, 2, ArgFlags);
+    //  continue;
+    //}
 
-  //  unsigned Parts = ArgsParts[i];
+    unsigned Parts = ArgsParts[i];
 
-  //  if (Builtin) {
-  //    assert(Parts == 4 &&
-  //        "Builtin calling convention requires 64-bit arguments");
-  //  }
+    if (Parts <= RegsLeft)
+    {
+      for (unsigned j = 0; j < Parts; j++) {
+        unsigned Reg = State.AllocateReg(RegList);
+        State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
+        RegsLeft--;
+      }
+    }
 
-  //  if (!UsedStack && Parts == 2 && RegsLeft == 1) {
-  //    // Special case for 32-bit register split, see EABI section 3.3.3
-  //    unsigned Reg = State.AllocateReg(RegList);
-  //    State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
-  //    RegsLeft -= 1;
+    //if (!UsedStack && Parts == 2 && RegsLeft == 1) {
+    //  // Special case for 32-bit register split, see EABI section 3.3.3
+    //  unsigned Reg = State.AllocateReg(RegList);
+    //  State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
+    //  RegsLeft -= 1;
 
-  //    UsedStack = true;
-  //    CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
-  //  } else if (Parts <= RegsLeft) {
-  //    for (unsigned j = 0; j < Parts; j++) {
-  //      unsigned Reg = State.AllocateReg(RegList);
-  //      State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
-  //      RegsLeft--;
-  //    }
-  //  } else {
-  //    UsedStack = true;
-  //    for (unsigned j = 0; j < Parts; j++)
-  //      CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
-  //  }
-  //}
+    //  UsedStack = true;
+    //  CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
+    //} else if (Parts <= RegsLeft) {
+    //  for (unsigned j = 0; j < Parts; j++) {
+    //    unsigned Reg = State.AllocateReg(RegList);
+    //    State.addLoc(CCValAssign::getReg(ValNo++, ArgVT, Reg, LocVT, LocInfo));
+    //    RegsLeft--;
+    //  }
+    //} else {
+    //  UsedStack = true;
+    //  for (unsigned j = 0; j < Parts; j++)
+    //    CC_WDC65816_AssignStack(ValNo++, ArgVT, LocVT, LocInfo, ArgFlags, State);
+    //}
+  }
 }
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::InputArg> &Ins) {
-  // WDC65816-TODO - AnalyzeRetResult
-  //State.AnalyzeCallResult(Ins, RetCC_WDC65816);
+  State.AnalyzeCallResult(Ins, RetCC_WDC65816);
 }
 
 static void AnalyzeRetResult(CCState &State,
                              const SmallVectorImpl<ISD::OutputArg> &Outs) {
-  // WDC65816-TODO - AnalyzeRetResult
-  //State.AnalyzeReturn(Outs, RetCC_WDC65816);
+  State.AnalyzeReturn(Outs, RetCC_WDC65816);
 }
 
 template<typename ArgT>
@@ -608,7 +595,7 @@ SDValue WDC65816TargetLowering::LowerCCCArguments(
     SelectionDAG &DAG, SmallVectorImpl<SDValue> &InVals) const {
   MachineFunction &MF = DAG.getMachineFunction();
   MachineFrameInfo &MFI = MF.getFrameInfo();
-  //MachineRegisterInfo &RegInfo = MF.getRegInfo();
+  MachineRegisterInfo &RegInfo = MF.getRegInfo();
   WDC65816MachineFunctionInfo *FuncInfo = MF.getInfo<WDC65816MachineFunctionInfo>();
 
   // Assign locations to all of the incoming arguments.
@@ -623,74 +610,73 @@ SDValue WDC65816TargetLowering::LowerCCCArguments(
     FuncInfo->setVarArgsFrameIndex(MFI.CreateFixedObject(1, Offset, true));
   }
 
-  // WDC65816-TODO - LowerCCCArguments
-//  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
-//    CCValAssign &VA = ArgLocs[i];
-//    if (VA.isRegLoc()) {
-//      // Arguments passed in registers
-//      EVT RegVT = VA.getLocVT();
-//      switch (RegVT.getSimpleVT().SimpleTy) {
-//      default:
-//        {
-//#ifndef NDEBUG
-//          errs() << "LowerFormalArguments Unhandled argument type: "
-//               << RegVT.getEVTString() << "\n";
-//#endif
-//          llvm_unreachable(nullptr);
-//        }
-//      case MVT::i16:
-//        unsigned VReg = RegInfo.createVirtualRegister(&WDC65816::GR16RegClass);
-//        RegInfo.addLiveIn(VA.getLocReg(), VReg);
-//        SDValue ArgValue = DAG.getCopyFromReg(Chain, dl, VReg, RegVT);
-//
-//        // If this is an 8-bit value, it is really passed promoted to 16
-//        // bits. Insert an assert[sz]ext to capture this, then truncate to the
-//        // right size.
-//        if (VA.getLocInfo() == CCValAssign::SExt)
-//          ArgValue = DAG.getNode(ISD::AssertSext, dl, RegVT, ArgValue,
-//                                 DAG.getValueType(VA.getValVT()));
-//        else if (VA.getLocInfo() == CCValAssign::ZExt)
-//          ArgValue = DAG.getNode(ISD::AssertZext, dl, RegVT, ArgValue,
-//                                 DAG.getValueType(VA.getValVT()));
-//
-//        if (VA.getLocInfo() != CCValAssign::Full)
-//          ArgValue = DAG.getNode(ISD::TRUNCATE, dl, VA.getValVT(), ArgValue);
-//
-//        InVals.push_back(ArgValue);
-//      }
-//    } else {
-//      // Sanity check
-//      assert(VA.isMemLoc());
-//
-//      SDValue InVal;
-//      ISD::ArgFlagsTy Flags = Ins[i].Flags;
-//
-//      if (Flags.isByVal()) {
-//        int FI = MFI.CreateFixedObject(Flags.getByValSize(),
-//                                       VA.getLocMemOffset(), true);
-//        InVal = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
-//      } else {
-//        // Load the argument to a virtual register
-//        unsigned ObjSize = VA.getLocVT().getSizeInBits()/8;
-//        if (ObjSize > 2) {
-//            errs() << "LowerFormalArguments Unhandled argument type: "
-//                << EVT(VA.getLocVT()).getEVTString()
-//                << "\n";
-//        }
-//        // Create the frame index object for this incoming parameter...
-//        int FI = MFI.CreateFixedObject(ObjSize, VA.getLocMemOffset(), true);
-//
-//        // Create the SelectionDAG nodes corresponding to a load
-//        //from this parameter
-//        SDValue FIN = DAG.getFrameIndex(FI, MVT::i16);
-//        InVal = DAG.getLoad(
-//            VA.getLocVT(), dl, Chain, FIN,
-//            MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), FI));
-//      }
-//
-//      InVals.push_back(InVal);
-//    }
-//  }
+  for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
+    CCValAssign &VA = ArgLocs[i];
+    if (VA.isRegLoc()) {
+      // Arguments passed in registers
+      EVT RegVT = VA.getLocVT();
+      switch (RegVT.getSimpleVT().SimpleTy) {
+      default:
+        {
+#ifndef NDEBUG
+          errs() << "LowerFormalArguments Unhandled argument type: "
+               << RegVT.getEVTString() << "\n";
+#endif
+          llvm_unreachable(nullptr);
+        }
+      case MVT::i16:
+        unsigned VReg = RegInfo.createVirtualRegister(&WDC65816::GACC16RegClass);
+        RegInfo.addLiveIn(VA.getLocReg(), VReg);
+        SDValue ArgValue = DAG.getCopyFromReg(Chain, dl, VReg, RegVT);
+
+        // If this is an 8-bit value, it is really passed promoted to 16
+        // bits. Insert an assert[sz]ext to capture this, then truncate to the
+        // right size.
+        if (VA.getLocInfo() == CCValAssign::SExt)
+          ArgValue = DAG.getNode(ISD::AssertSext, dl, RegVT, ArgValue,
+                                 DAG.getValueType(VA.getValVT()));
+        else if (VA.getLocInfo() == CCValAssign::ZExt)
+          ArgValue = DAG.getNode(ISD::AssertZext, dl, RegVT, ArgValue,
+                                 DAG.getValueType(VA.getValVT()));
+
+        if (VA.getLocInfo() != CCValAssign::Full)
+          ArgValue = DAG.getNode(ISD::TRUNCATE, dl, VA.getValVT(), ArgValue);
+
+        InVals.push_back(ArgValue);
+      }
+    } else {
+      // Sanity check
+      assert(VA.isMemLoc());
+
+      SDValue InVal;
+      ISD::ArgFlagsTy Flags = Ins[i].Flags;
+
+      if (Flags.isByVal()) {
+        int FI = MFI.CreateFixedObject(Flags.getByValSize(),
+                                       VA.getLocMemOffset(), true);
+        InVal = DAG.getFrameIndex(FI, getPointerTy(DAG.getDataLayout()));
+      } else {
+        // Load the argument to a virtual register
+        unsigned ObjSize = VA.getLocVT().getSizeInBits()/8;
+        if (ObjSize > 2) {
+            errs() << "LowerFormalArguments Unhandled argument type: "
+                << EVT(VA.getLocVT()).getEVTString()
+                << "\n";
+        }
+        // Create the frame index object for this incoming parameter...
+        int FI = MFI.CreateFixedObject(ObjSize, VA.getLocMemOffset(), true);
+
+        // Create the SelectionDAG nodes corresponding to a load
+        //from this parameter
+        SDValue FIN = DAG.getFrameIndex(FI, MVT::i16);
+        InVal = DAG.getLoad(
+            VA.getLocVT(), dl, Chain, FIN,
+            MachinePointerInfo::getFixedStack(DAG.getMachineFunction(), FI));
+      }
+
+      InVals.push_back(InVal);
+    }
+  }
 
   for (unsigned i = 0, e = ArgLocs.size(); i != e; ++i) {
     if (Ins[i].Flags.isSRet()) {

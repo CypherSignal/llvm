@@ -228,7 +228,7 @@ namespace CallingConv {
 
     /// Calling convention used for special WDC65816 rtlib functions
     /// which have an "optimized" convention using additional registers.
-    WDC65816_BUILTIN = 1022,
+    WDC65816_BUILTIN = 1022, // WDC65816-TODO hmm, not sure this CC makes sense?
 
     /// The highest possible calling convention ID. Must be some 2^k - 1.
     MaxID = 1023

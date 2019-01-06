@@ -64,8 +64,30 @@ def ADC16imm : Instruction {
   field bits<24> Inst = {opCode, immData};
 
   field bits<48> SoftFail = 0;
-
 }
+
+def WDC65816retflag  : SDNode<"WDC65816ISD::RET_FLAG", SDTNone,
+                       [SDNPHasChain, SDNPOptInGlue, SDNPVariadic]>;
+
+
+def RET : Instruction {
+  let Namespace = "WDC65816";
+
+  let OutOperandList = (outs);
+  let InOperandList = (ins);
+
+  let AsmString = "rts";
+
+  let Pattern = [(WDC65816retflag)];
+
+  let Size = 1;
+
+  field bits<8> opCode = 0x60;
+  field bits<8> Inst = {opCode};
+
+  field bits<48> SoftFail = 0;
+}
+
 // // WDC65816 Double Operand (Format I) Instructions
 // class IForm<bits<4> opcode, DestMode ad, bit bw, SourceMode as, int size,
 //             dag outs, dag ins, string asmstr, list<dag> pattern>
