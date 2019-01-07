@@ -61,8 +61,8 @@ def GIDX16  : RegisterClass<"WDC65816", [i16],  16, (add X, Y)>;
 def GS8     : RegisterClass<"WDC65816", [i8],   8,  (add SL, SH)>;
 def GS16    : RegisterClass<"WDC65816", [i16],  16, (add S)>;
 
-def GDBR    : RegisterClass<"WDC65816", [i16],  16, (add DBR)>;
+def GDBR    : RegisterClass<"WDC65816", [i8],   8,  (add DBR)>;
 def GD      : RegisterClass<"WDC65816", [i16],  16, (add D)>;
-def GK      : RegisterClass<"WDC65816", [i16],  16, (add K)>;
+def GK      : RegisterClass<"WDC65816", [i8],   8,  (add K)>;
 def GPC     : RegisterClass<"WDC65816", [i16],  16, (add PC)>;
 def GP      : RegisterClass<"WDC65816", [i16],  16, (add P)>;
